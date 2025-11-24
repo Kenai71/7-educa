@@ -26,7 +26,7 @@ import privateRoute from './routes/private.route.js';
 const app = express();
 const PORT = process.env.PORT || 3020;
 
-// Middleware para evitar cache (Logout e segurança)
+// Middleware para evitar cache
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     res.set('Pragma', 'no-cache');
@@ -37,31 +37,40 @@ app.use((req, res, next) => {
 // Configurações Gerais
 app.set("view engine", "ejs");
 app.set("views", "./views");
-app.use(express.static('public'));
+
+// --- CORREÇÃO IMPORTANTE: Caminho absoluto para arquivos estáticos ---
+app.use(express.static(path.join(__dirname, 'public'))); 
+// -------------------------------------------------------------------
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Configuração de Sessão (Em memória, compatível com Vercel)
+// Configuração de Sessão
 app.use(session({
     secret: process.env.SESSION_SECRET || 'chave-secreta-padrao',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: { 
-        secure: false, // Mude para true se tiver SSL/HTTPS configurado
+        secure: false, 
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24 horas
+        maxAge: 24 * 60 * 60 * 1000 
     } 
 }));
 
-// --- ROTAS ---
+// --- ROTAS PRINCIPAIS ---
 
-// Rota Inicial
+// Rota Inicial (Home do site)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Autenticação e Cadastro
+// Rota do Contrato (CORREÇÃO: Adicionada para o botão funcionar)
+app.get('/contrato', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'contrato.html'));
+});
+
+// --- ROTAS DO SISTEMA ---
 app.use('/login', loginRouter);
 app.use('/cadastro', cadastroRouter);
 app.get("/cadastro-aluno", privateRoute, (req, res) => { 
@@ -72,22 +81,18 @@ app.get("/cadastro-responsavel", privateRoute, (req, res) => {
 });
 app.use("/acessar-aluno", privateRoute, alunoAcessarRouter); 
 
-// Perfil e Funcionalidades
 app.use('/meuperfil', privateRoute, perfilRouter);
 app.use('/api/perfil', privateRoute, perfilRouter);
 app.use('/mensalidade', privateRoute, mensalidadeRouter); 
 app.use('/arquivados', privateRoute, arquivadosRouter); 
 
-// Financeiro
 app.get('/financeiro', privateRoute, (req, res) => { 
   res.render('FINANCEIRO/financeiro');
 });
 app.use('/api', privateRoute, financeiroRoutes); 
 
-// Home Dashboard
 app.get("/home", privateRoute, async (req, res) => {
     try {
-        // Consultas ao Supabase
         let { data: profData } = await supabase.from('professor').select('ativo');
         let profFinal = profData ? profData.filter(p => String(p.ativo).toLowerCase() === 'true').length : 0;
 
@@ -121,18 +126,15 @@ app.get("/home", privateRoute, async (req, res) => {
     }
 });
 
-// Outras Rotas do Sistema
 app.use('/senha', senhaRouter);
 app.use('/turmas', privateRoute, turmasRouter); 
 app.use('/matriculas', privateRoute, matriculasRouter); 
 app.use('/professores', privateRoute, professoresRoutes); 
 
-// Termos de Uso
 app.get('/termossete', (req, res) => {
     res.render('TERMOS/termossete', { title: 'Termos de Uso - Sete Educacional' });
 });
 
-// Rota de Teste do Banco
 app.get('/testar-banco', async (req, res) => {
   try{
         const { error, count } = await supabase.from('professor').select('*', { count: 'exact', head: true });
@@ -143,7 +145,6 @@ app.get('/testar-banco', async (req, res) => {
   }
 });
 
-// Inicialização do Servidor
 if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);

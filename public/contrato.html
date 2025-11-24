@@ -12,48 +12,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS mantido igual */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        body { font-family: 'Inter', sans-serif; }
         .bg-primary { background-color: #ffe5a4; }
         .bg-action-orange { background-color: #ffbb68; }
         .bg-action-orange-dark { background-color: #f57c00; } 
         .bg-warm { background-color: #FFF4DF; }
-        
         .bg-action-pink { background-color: #E91E63; }
         .bg-action-pink-dark { background-color: #D81B60; }
-
         .text-dark-gray { color: #333333; }
         .border-action-orange { border-color: #f57c00; }
-
-        /* Classes de texto e borda adicionadas */
         .text-action-pink { color: #E91E63; }
         .border-action-pink { border-color: #E91E63; }
-
-        .nav-link {
-            position: relative;
-            padding: 0.5rem 0;
-        }
+        .nav-link { position: relative; padding: 0.5rem 0; }
         .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: #ffca0a; 
-            transform: scaleX(0);
-            transform-origin: center;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background-color: #ffca0a; transform: scaleX(0); transform-origin: center;
             transition: transform 0.3s ease;
         }
-        .nav-link:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .swiper-button-next, .swiper-button-prev, .swiper-pagination {
-            display: none;
-        }
+        .nav-link:hover::before { transform: scaleX(1); }
+        .swiper-button-next, .swiper-button-prev, .swiper-pagination { display: none; }
     </style>
 </head>
 
@@ -61,25 +38,25 @@
 
     <header id="header" class="bg-white/90 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
     <div class="container mx-auto px-6 py-2 flex justify-between items-center">
-        <a href="site.html">
-            <img src="img/logo (2).png" alt="Logo Seteeduca" class="h-24 md:h-32 -my-4" style="padding: 30px;">
+        <a href="/">
+            <img src="/img/logo-2.png" alt="Logo Seteeduca" class="h-24 md:h-32 -my-4" style="padding: 30px;">
         </a>
         
         <nav class="hidden md:flex items-center space-x-8">
-            <a href="site.html#quem-somos" class="nav-link text-gray-900 hover:text-action-orange transition">Quem Somos</a>
-            <a href="site.html#equipe" class="nav-link text-gray-900 hover:text-action-orange transition">Equipe</a>
-            <a href="site.html#recursos" class="nav-link text-gray-900 hover:text-action-orange transition">Recursos</a>
-            <a href="site.html#planos" class="nav-link text-gray-900 hover:text-action-orange transition">Plano</a>
+            <a href="/#quem-somos" class="nav-link text-gray-900 hover:text-action-orange transition">Quem Somos</a>
+            <a href="/#equipe" class="nav-link text-gray-900 hover:text-action-orange transition">Equipe</a>
+            <a href="/#recursos" class="nav-link text-gray-900 hover:text-action-orange transition">Recursos</a>
+            <a href="/#planos" class="nav-link text-gray-900 hover:text-action-orange transition">Plano</a>
         </nav>
         <button id="mobile-menu-button" class="md:hidden text-primary focus:outline-none" style="color: #f57c00;"> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
         </button>
 
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg z-40 border-t border-gray-200">
             <nav class="flex flex-col p-6 space-y-4">
-                <a href="site.html#quem-somos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Quem Somos</a>
-                <a href="site.html#equipe" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Equipe</a>
-                <a href="site.html#recursos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Recursos</a>
-                <a href="site.html#planos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Plano</a>
+                <a href="/#quem-somos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Quem Somos</a>
+                <a href="/#equipe" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Equipe</a>
+                <a href="/#recursos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Recursos</a>
+                <a href="/#planos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Plano</a>
             </nav>
         </div>
         </div>
@@ -166,7 +143,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 text-center md:text-left">
                 
                 <div class="flex justify-center md:justify-start">
-                     <img src="img/sete.svg" alt="Logo Seteeduca" class="h-20 -mt-6" style="height: 250px; margin: -30px; margin-right: 20px;"> 
+                     <img src="/img/sete.svg" alt="Logo Seteeduca" class="h-20 -mt-6" style="height: 250px; margin: -30px; margin-right: 20px;"> 
                 </div>
 
                 <div>
@@ -184,8 +161,8 @@
                 <div>
                     <h4 class="font-bold text-gray-900 mb-4 tracking-wider uppercase">Sobre Nós</h4>
                     <ul class="space-y-3">
-                        <li><a href="#quem-somos" class="text-gray-600 hover:text-black transition">Quem Somos</a></li>
-                        <li><a href="#equipe" class="text-gray-600 hover:text-black transition">Equipe</a></li>
+                        <li><a href="/#quem-somos" class="text-gray-600 hover:text-black transition">Quem Somos</a></li>
+                        <li><a href="/#equipe" class="text-gray-600 hover:text-black transition">Equipe</a></li>
                         <li><a href="#" class="text-gray-600 hover:text-black transition">Parceiros - SENAI CIMATEC/ SESI</a></li>
                     </ul>
                 </div>

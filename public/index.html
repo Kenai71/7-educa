@@ -14,26 +14,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        body { font-family: 'Inter', sans-serif; }
         .bg-primary { background-color: #ffe5a4; }
         .bg-action-orange { background-color: #ffbb68; }
         .bg-action-orange-dark { background-color: #f57c00; } 
         .bg-warm { background-color: #FFF4DF; }
-        
         .bg-action-pink { background-color: #E91E63; }
         .bg-action-pink-dark { background-color: #D81B60; }
-
         .text-dark-gray { color: #333333; }
         .border-action-orange { border-color: #f57c00; }
-        
         .text-icon-orange { color: #f5a623; }
         .text-icon-blue { color: #4a90e2; }
         .text-icon-purple { color: #9013fe; }
         .text-icon-red { color: #d0021b; }
         .text-icon-green { color: #7ed321; }
-
         .swiper-button-next, .swiper-button-prev {
             color: #ffffff;
             background-color: rgba(0, 0, 0, 0.2);
@@ -42,45 +36,19 @@
             border-radius: 9999px;
             transition: background-color 0.3s;
         }
-        .swiper-button-next:hover, .swiper-button-prev:hover {
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-        .swiper-button-next::after, .swiper-button-prev::after {
-            font-size: 18px;
-            font-weight: 800;
-        }
-        .swiper-pagination-bullet-active {
-            background-color: #ffffff;
-        }
-
-        .nav-link {
-            position: relative;
-            padding: 0.5rem 0;
-        }
+        .swiper-button-next:hover, .swiper-button-prev:hover { background-color: rgba(0, 0, 0, 0.4); }
+        .swiper-button-next::after, .swiper-button-prev::after { font-size: 18px; font-weight: 800; }
+        .swiper-pagination-bullet-active { background-color: #ffffff; }
+        .nav-link { position: relative; padding: 0.5rem 0; }
         .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: #ffca0a; 
-            transform: scaleX(0);
-            transform-origin: center;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background-color: #ffca0a; transform: scaleX(0); transform-origin: center;
             transition: transform 0.3s ease;
         }
-        .nav-link:hover::before {
-            transform: scaleX(1);
-        }
-
+        .nav-link:hover::before { transform: scaleX(1); }
         .team-avatar {
-            width: 128px; 
-            height: 128px; 
-            border-radius: 9999px; 
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-top: -64px; 
+            width: 128px; height: 128px; border-radius: 9999px; object-fit: cover;
+            border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: -64px; 
         }
     </style>
 </head>
@@ -89,8 +57,8 @@
 
     <header id="header" class="bg-white/90 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-6 py-2 flex justify-between items-center">
-            <a href="site.html">
-                <img src="img/logo (2).png" alt="Logo Seteeduca" class="h-24 md:h-32 -my-4" style="padding: 30px;">
+            <a href="/">
+                <img src="/img/logo-2.png" alt="Logo Seteeduca" class="h-24 md:h-32 -my-4" style="padding: 30px;">
             </a>
             
             <nav class="hidden md:flex items-center space-x-8">
@@ -119,7 +87,7 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="absolute inset-0">
-                            <img src="img/1img.png" alt="Professora com crianças e tablet" class="w-full h-full object-cover">
+                            <img src="/img/1img.png" alt="Professora com crianças e tablet" class="w-full h-full object-cover">
                         </div>
                         <div class="absolute inset-0 bg-black/50"></div>
                         <div class="relative h-full flex items-center justify-center text-center text-white px-6">
@@ -135,7 +103,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="absolute inset-0">
-                            <img src="img/2img.png" alt="Crianças brincando" class="w-full h-full object-cover">
+                            <img src="/img/2img.png" alt="Crianças brincando" class="w-full h-full object-cover">
                         </div>
                         <div class="absolute inset-0 bg-black/50"></div>
                         <div class="relative h-full flex items-center justify-center text-center text-white px-6">
@@ -160,7 +128,7 @@
                     <div class="relative min-h-[400px] lg:min-h-[500px]">
                         <div class="absolute inset-y-0 left-0 w-4/5 bg-primary rounded-3xl transform -rotate-6"></div>
                         <div class="absolute inset-0 flex items-center justify-center p-8">
-                             <img src="img/sete.svg" alt="Logo Seteeduca 7 colorido" class="rounded-3xl shadow-2xl w-full h-auto object-cover max-w-md transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                             <img src="/img/sete.svg" alt="Logo Seteeduca 7 colorido" class="rounded-3xl shadow-2xl w-full h-auto object-cover max-w-md transform rotate-3 hover:rotate-0 transition-transform duration-500">
                         </div>
                     </div>
                     <div class="relative z-10 flex items-center">
@@ -188,42 +156,42 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 max-w-5xl mx-auto pt-16">
 
                     <div class="bg-warm rounded-2xl shadow-xl text-center p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                        <img src="img/rol.png" alt="Foto de Rol" class="team-avatar mx-auto">
+                        <img src="/img/rol.png" alt="Foto de Rol" class="team-avatar mx-auto">
                         <h4 class="text-2xl font-bold text-dark-gray mt-6 mb-1">Ana Carolina Sena</h4>
                         <p class="font-medium text-action-orange-dark">Designer UX/UI e Desenvolvedora backend</p>
                         <p class="text-gray-600 text-sm mt-3">Cuida da "mágica" por trás das telas, garantindo segurança e performance - Desenvolvedora do Painel Financeiro, Home e parte do site inicial </p>
                     </div>
 
                     <div class="bg-warm rounded-2xl shadow-xl text-center p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                        <img src="img/Manu.png" alt="Foto da Manu" class="team-avatar mx-auto">
+                        <img src="/img/Manu.png" alt="Foto da Manu" class="team-avatar mx-auto">
                         <h4 class="text-2xl font-bold text-dark-gray mt-6 mb-1">Emanoele Santos</h4>
                         <p class="font-medium text-action-orange-dark">Designer UX/UI e Desenvolvedora backend</p>
                         <p class="text-gray-600 text-sm mt-3">Gerente de projetos com paixão por organização, focado em transformar conceitos em realidade - Desenvolvedora da página de TURMAS e MATRÍCULA</p>
                     </div>
 
                     <div class="bg-warm rounded-2xl shadow-xl text-center p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                        <img src="img/gaby.png"Foto da Gaby" class="team-avatar mx-auto">
+                        <img src="/img/gaby.png"Foto da Gaby" class="team-avatar mx-auto">
                         <h4 class="text-2xl font-bold text-dark-gray mt-6 mb-1">Gabriela Anunciação</h4>
                         <p class="font-medium text-action-orange-dark">Designer UX/UI e Desenvolvedora backend</p>
                         <p class="text-gray-600 text-sm mt-3">A arquiteta por trás da estrutura, garantindo que a fundação seja escalável e robusta - Desenvolvedora da página de CADASTRO DOS ALUNOS</p>
                     </div>
 
                      <div class="bg-warm rounded-2xl shadow-xl text-center p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 mt-16 md:mt-0">
-                        <img src="img/ka.png" alt="Foto de Kaka" class="team-avatar mx-auto">
+                        <img src="/img/ka.png" alt="Foto de Kaka" class="team-avatar mx-auto">
                         <h4 class="text-2xl font-bold text-dark-gray mt-6 mb-1">Karina Celestino</h4>
                         <p class="font-medium text-action-orange-dark">Designer UX/UI e Desenvolvedora backend</p>
                         <p class="text-gray-600 text-sm mt-3">Responsável por tornar o Seteeduca intuitivo e fácil de usar para todos, fazendo as engrenagens complexas girarem de forma rápida- Desenvolvedora do CADASTRO, LOGIN e parte do site inicial</p>
                     </div>
 
                      <div class="bg-warm rounded-2xl shadow-xl text-center p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 mt-16 md:mt-0">
-                        <img src="img/ceci.png" alt="Foto Ceci" class="team-avatar mx-auto">
+                        <img src="/img/ceci.png" alt="Foto Ceci" class="team-avatar mx-auto">
                         <h4 class="text-2xl font-bold text-dark-gray mt-6 mb-1">Maria Cecília Nunes</h4>
                         <p class="font-medium text-action-orange-dark">Designer UX/UI e Desenvolvedora backend </p>
                         <p class="text-gray-600 text-sm mt-3">Traduz o caos em ordem, transformando linhas de código em uma experiência fluida - Desenvolvedora do Banco de Dados do Sistema e página de PROFESSORES</p>
                     </div>
 
                      <div class="bg-warm rounded-2xl shadow-xl text-center p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 mt-16 md:mt-0">
-                        <img src="img/duda.png" alt="Foto de Duda" class="team-avatar mx-auto">
+                        <img src="/img/duda.png" alt="Foto de Duda" class="team-avatar mx-auto">
                         <h4 class="text-2xl font-bold text-dark-gray mt-6 mb-1">Lucia Costa</h4>
                         <p class="font-medium text-action-orange-dark">Designer UX/UI e Desenvolvedora backend</p>
                         <p class="text-gray-600 text-sm mt-3">Estrategista com foco no usuário, com vocação para otimizar a jornada do cliente - Desenvolvedora do PERFIL </p>
@@ -304,7 +272,7 @@
                             <li class="flex items-center"><svg class="w-5 h-5 text-green-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Gestão Financeira (ASAAS)</li>
                             <li class="flex items-center"><svg class="w-5 h-5 text-green-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Suporte Prioritário</li>
                         </ul>
-                        <a href="contrato.html" class="mt-8 block w-full text-center bg-action-orange-dark text-white font-semibold px-5 py-3 rounded-lg shadow-md hover:bg-orange-700 transition transform hover:-translate-y-0.5">
+                        <a href="/contrato" class="mt-8 block w-full text-center bg-action-orange-dark text-white font-semibold px-5 py-3 rounded-lg shadow-md hover:bg-orange-700 transition transform hover:-translate-y-0.5">
                             Contratar Agora
                         </a>
                     </article>
@@ -319,7 +287,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 text-center md:text-left">
                 
                 <div class="flex justify-center md:justify-start">
-                     <img src="img/sete.svg" alt="Logo Seteeduca" class="h-20 -mt-6" style="height: 250px; margin: -30px; margin-right: 20px;"> 
+                     <img src="/img/sete.svg" alt="Logo Seteeduca" class="h-20 -mt-6" style="height: 250px; margin: -30px; margin-right: 20px;"> 
                 </div>
 
                 <div>
