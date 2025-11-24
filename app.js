@@ -80,9 +80,9 @@ app.use(express.json());
 
 //INICIO
 
-app.get("/", (req, res) => {
-  // Envia o arquivo site.html que agora está na pasta public
-  res.sendFile(process.cwd() + "/public/site.html");
+// Como deve ficar:
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 //LOGIN
