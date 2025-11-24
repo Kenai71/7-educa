@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* --- Fontes --- */
+        @import url('https://fonts.googleapis.com/css2?family=Konkhmer+Sleokchher&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Allerta&display=swap');
+
+        /* --- Configuração Geral --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Allerta', sans-serif;
+            overflow-x: hidden;
+            background-color: #FFFFFF;
+        }
+
+        .main-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* --- Painel Esquerdo (Imagem) --- */
+        .left-panel {
+            flex: 1;
+            max-width: 50%;
+            height: 100%; /* Garante altura total */
+        }
+
+        .left-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cobre o espaço sem distorcer */
+        }
+
+        /* --- Painel Direito (Formulário de Login) --- */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            height: 100%; /* Garante altura total */
+            overflow-y: auto; /* Permite scroll se necessário */
+        }
+
+        .login-container {
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .login-container h1 {
+            font-family: 'Konkhmer Sleokchher', cursive;
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin: 0;
+            color: #000000;
+        }
+
+        .login-container h2 {
+            font-family: 'Kodchasan', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: #555555;
+            margin-bottom: 40px;
+        }
+        
+        /* --- Estilos do Formulário --- */
+        .form-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .form-group label {
+            font-family: 'Kodchasan', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #838181;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 65px;
+            border-radius: 12px;
+            border: 1px solid #DCDCDC;
+            background-color: #FFF9E8;
+            padding: 0 20px; /* Padding ajustado */
+            font-size: 1rem;
+            box-sizing: border-box;
+            color: #3B3B3B;
+            /* Remove padding extra quando há ícone */
+            padding-right: 50px; /* Espaço para o ícone do olho */
+        }
+        /* Ajuste específico para o campo de email que não tem ícone */
+        .form-group input[type="email"] {
+            padding-right: 20px;
+        }
+
+        .form-group input::placeholder {
+            color: #A0A0A0;
+        }
+         .form-group input:focus {
+            outline: none;
+            border-color: #fcdc6a; /* Cor de foco */
+            box-shadow: 0 0 0 3px rgba(252, 220, 106, 0.4);
+         }
+
+        .password-wrapper {
+            position: relative;
+            display: flex; /* Mantido flex por causa do ícone */
+            align-items: center; /* Alinha input e ícone */
+        }
+        /* Input dentro do wrapper ocupa toda a largura */
+        .password-wrapper input {
+            width: 100%;
+        }
+
+        .toggle-password { /* Ícone do olho */
+            position: absolute;
+            right: 20px;
+            top: 50%; /* Centraliza verticalmente */
+            transform: translateY(-50%); /* Ajuste fino da centralização */
+            cursor: pointer;
+            color: #838181;
+            font-size: 1.1rem; /* Tamanho do ícone */
+        }
+
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-top: 15px; /* Reduzido um pouco */
+            color: #838181;
+            flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+            gap: 10px; /* Espaço entre os links se quebrar linha */
+        }
+
+        .form-links a {
+            color: #00A6FF; /* Azul para links */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .form-links a:hover {
+            text-decoration: underline;
+        }
+
+        .form-links p a { /* Link dentro do "Não é cadastrado?" */
+            color: #FFC72C; /* Amarelo */
+        }
+
+        #submit-btn {
+            display: block; /* Ocupa linha inteira */
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+            padding: 18px 0; /* Padding vertical controla altura */
+            border-radius: 30px; /* Bordas arredondadas */
+            border: 1px solid #E0B400;
+            background-color: #fcdc6a; /* Amarelo */
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: 'Kodchasan', sans-serif;
+            cursor: pointer;
+            margin-top: 35px;
+            color: #000;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+         #submit-btn:hover {
+            background-color: #e9c65a; /* Amarelo mais escuro */
+         }
+         #submit-btn:active {
+            transform: scale(0.98); /* Efeito de clique */
+         }
+
+        /* Mensagens de Erro/Sucesso (Vindas do Backend via EJS) */
+        .error-message, .success-message {
+            font-family: 'Allerta', sans-serif;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 10px;
+            padding: 12px 15px; /* Padding ajustado */
+            border-radius: 8px; /* Borda mais suave */
+            margin-bottom: 20px; /* Espaço abaixo da mensagem */
+            display: flex; /* Para alinhar ícone e texto */
+            align-items: center;
+            gap: 10px; /* Espaço entre ícone e texto */
+        }
+
+        .error-message {
+            color: #721c24; /* Texto vermelho escuro */
+            background-color: #f8d7da; /* Fundo rosa claro */
+            border: 1px solid #f5c6cb; /* Borda rosa */
+        }
+         .error-message i { color: #dc3545; } /* Ícone vermelho */
+
+        .success-message {
+            color: #155724; /* Texto verde escuro */
+            background-color: #d4edda; /* Fundo verde claro */
+            border: 1px solid #c3e6cb; /* Borda verde */
+        }
+        .success-message i { color: #28a745; } /* Ícone verde */
+
+
+        /* --- CSS DO MODAL (REMOVIDO DO HTML, MAS DEIXADO AQUI) --- */
+        /* Deixar este CSS não afeta a página e é mais simples */
+        .modal-overlay {
+            display: none; 
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background-color: #FFFFFF;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 520px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+         @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+         }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #aaa;
+            background: none;
+            border: none;
+            line-height: 1;
+            padding: 5px;
+        }
+        .modal-close:hover { color: #333; }
+        .modal-content h3 {
+            font-family: 'Konkhmer Sleokchher', cursive;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin: 0 0 10px 0;
+            color: #000000;
+            text-align: center;
+        }
+        .modal-content p {
+            font-family: 'Kodchasan', sans-serif;
+            font-size: 1rem;
+            color: #555555;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .recovery-step { display: none; }
+        .recovery-step.active { display: block; }
+        .modal-content .submit-btn {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+            padding: 18px 0;
+            border-radius: 30px;
+            border: 1px solid #E0B400;
+            background-color: #fcdc6a;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: 'Kodchasan', sans-serif;
+            cursor: pointer;
+            margin-top: 25px;
+            color: #000;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .modal-content .submit-btn:hover { background-color: #e9c65a; }
+        .modal-content .submit-btn:active { transform: scale(0.98); }
+        .modal-content .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #e9ecef;
+            border-color: #ced4da;
+        }
+        .modal-links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .modal-links a {
+            color: #00A6FF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .modal-links a:hover { text-decoration: underline; }
+        #modalMessage {
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+
+
+        /* --- Responsividade --- */
+        @media (max-width: 992px) {
+            .left-panel {
+                display: none; /* Esconde imagem em telas médias/pequenas */
+            }
+            .right-panel {
+                flex-basis: 100%;
+                max-width: 100%;
+                padding-top: 4rem; /* Mais espaço no topo */
+                justify-content: flex-start; /* Alinha no topo */
+                height: auto; /* Altura automática */
+                min-height: 100vh; /* Garante que ocupe a tela */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-container h1 {
+                font-size: 2.8rem;
+                text-align: center;
+            }
+            .login-container h2 {
+                font-size: 1.1rem;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .right-panel {
+                padding: 3rem 1.5rem; /* Menos padding lateral */
+            }
+            .modal-content {
+                padding: 30px 20px; /* Menos padding no modal */
+            }
+            .modal-content h3 {
+                font-size: 2rem;
+            }
+             .form-links {
+                flex-direction: column; /* Empilha os links */
+                align-items: center;
+                gap: 15px;
+             }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="left-panel">
+            <img src="/imagem/BV.svg" alt="Banner de boas-vindas com ilustrações infantis">
+        </div>
+
+        <div class="right-panel">
+            <div class="login-container">
+                <h1>Login</h1>
+                <h2>Sentimos falta de você!</h2>
+
+                <!-- Mensagens de erro/sucesso (vindas do backend) -->
+                <!-- A mensagem de 'senha redefinida' aparecerá aqui -->
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i> <%= error %>
+                    </div>
+                <% } %>
+                <% if (typeof success !== 'undefined' && success) { %>
+                    <div class="success-message">
+                        <i class="fas fa-check-circle"></i> <%= success %>
+                    </div>
+                    <script>
+                        // Opcional: Esconder a mensagem de sucesso após 5 segundos
+                        setTimeout(() => {
+                            const successDiv = document.querySelector('.success-message');
+                            if (successDiv) successDiv.style.display = 'none';
+                        }, 5000);
+                    </script>
+                <% } %>
+                
+                <!-- Formulário de Login Principal -->
+                <form id="loginForm" method="POST" action="/login">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                            <i class="fas fa-eye toggle-password" data-target="password"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-links">
+                        <p>Não é cadastrado? <a href="/cadastro">Cadastro</a></p>
+                        <!-- ATUALIZADO: Este link agora aponta para a nova rota -->
+                        <a href="/senha/esqueci">Esqueceu a senha?</a>
+                    </div>
+
+                    <button type="submit" id="submit-btn">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        MODAL DE RECUPERAÇÃO DE SENHA REMOVIDO
+        Toda a <div class="modal-overlay" id="recoveryModal">...</div> foi removida.
+    -->
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Toggle password visibility (para todos os campos de senha)
+            // ESTA PARTE FOI MANTIDA
+            document.querySelectorAll('.toggle-password').forEach(icon => {
+                icon.addEventListener('click', function () {
+                    const targetId = this.dataset.target;
+                    const input = document.getElementById(targetId);
+                    if (input) {
+                        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                        input.setAttribute('type', type);
+                        // Alterna entre olho aberto e fechado
+                        this.classList.toggle('fa-eye');
+                        this.classList.toggle('fa-eye-slash');
+                    }
+                });
+            });
+
+            // --- Lógica do Modal "Esqueceu a Senha?" ---
+            // TODA A LÓGICA DO MODAL FOI REMOVIDA DAQUI
+            // ...
+
+        }); // Fim do DOMContentLoaded
+    </script>
+</body>
+</html>

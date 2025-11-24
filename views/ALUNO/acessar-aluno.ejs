@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sete Educa - Acessar Alunos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #e8e8e8; min-height: 100vh; display: flex; }
+   .sidebar { width: 280px; background: linear-gradient(180deg, #FFF4DF 0%, #f8f0e3 100%); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1); min-height: 100vh; flex-shrink: 0;   
+    a {
+    text-decoration: none;
+                } }
+    .logo { padding: 0 40px; text-align: center; margin: 30px 0 25px 0; }
+    .logo { padding: 0 40px; text-align: center; margin: 30px 0 25px 0; }
+    .menu { flex: 1; padding: 20px 18px; overflow-y: auto; }
+    .menu-item { padding: 30px 20px; margin-bottom: 6px; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; position: relative; display: flex; align-items: center; font-weight: 500; color: black; }
+    .menu-item i { margin-right: 15px; font-size: 18px; width: 24px; text-align: center; z-index: 2; }
+    .menu-item span { z-index: 2; font-size: 15px; }
+    .menu-item:hover { background-color: #6c757d21; }
+   /* Configuração da Linha (Traço) */
+.menu-item::after {
+    content: '';
+    position: absolute;
+    bottom: 10px; /* Altura da linha em relação ao botão */
+    left: 20px;   /* Alinhamento a esquerda (igual ao ícone) */
+    height: 3px;  /* Espessura da linha */
+    width: 25px;  /* LARGURA FIXA (Para aparecer sempre) */
+    border-radius: 2px;
+}
+
+/* Removemos a animação de crescer, para ficar fixo */
+.menu-item:hover::after, .menu-item.active::after {
+    width: 25px; /* Mantém o tamanho fixo mesmo ao passar o mouse */
+}
+
+/* --- CORES DE CADA ITEM --- */
+
+/* 1. Início (Amarelo) */
+.menu-item:nth-child(1)::after {
+    background-color: #F4BF27;
+}
+
+/* 2. Cadastro (Cinza/Bege no print, mas aqui está azul. Ajuste a cor se quiser) */
+/* Se quiser a cor do print original (bege escuro): use #C4C4C4 ou similar */
+.menu-item:nth-child(2)::after {
+    background-color: #A0A0A0; /* Ajustei para cinza para testar */
+}
+
+/* 3. Matrícula (Roxo) */
+.menu-item:nth-child(3)::after {
+    background-color: #9747FF;
+}
+
+/* 4. Professor (Laranja) */
+.menu-item:nth-child(4)::after {
+    background-color: #F88C12;
+}
+
+/* 5. Turma (Vermelho) */
+.menu-item:nth-child(5)::after {
+    background-color: #D22A2A;
+}
+
+/* 6. Financeiro (Verde) */
+.menu-item:nth-child(6)::after {
+    background-color: #59C631;
+
+        }
+    .menu-item:nth-child(2)::after { background-color: #306bc2; } 
+    .menu-item.active { background-color: rgba(128, 128, 128, 0.356); color: #333; font-weight: 600; }
+     .menu-item.active::before {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: currentColor;
+            z-index: 2;
+        }
+     .sidebar-footer { padding: 20px 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+    .logout-button { padding: 16px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; font-weight: 500; color: #333; width: 100%; border: none; background: transparent; }
+    .logout-button:hover { background-color: rgba(210, 42, 42, 0.1); color: #c01e26; font-weight: 600; }
+    .main-content { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .header { background: #306bc2; height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; color: white; width: 100%; }
+    .header-title { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; color: white; font-family: 'Kodchasan', sans-serif; }
+    .profile { position: relative; cursor: pointer; margin-left: auto; }
+    .profile-header { display: flex; align-items: center; gap: 12px; color: white; padding: 5px; border-radius: 8px; transition: background 0.2s; }
+    .profile-header:hover { background: rgba(255, 255, 255, 0.1); }
+    .profile-dropdown { display: none; position: absolute; top: 130%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); width: 200px; padding: 8px 0; z-index: 1000; flex-direction: column; border: 1px solid #edf2f7; }
+    .profile-dropdown.active { display: flex; }
+    .profile-dropdown a { padding: 12px 20px; text-decoration: none; color: #4a5568; display: flex; align-items: center; gap: 12px; font-size: 14px; transition: all 0.2s; }
+    .profile-dropdown a:hover { background: #f7fafc; color: #306bc2; }
+    .content-area { padding: 30px; background: #fcf8f2; flex: 1; width: 100%; }
+    .search-section { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+    .search-container { position: relative; width: 400px; }
+    .search-input { width: 100%; height: 50px; background: white; border: 2px solid #ddd; border-radius: 25px; padding: 0 20px 0 50px; font-size: 16px; outline: none; }
+    .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #999; }
+    .new-button { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s ease; }
+    .new-button:hover { transform: translateY(-2px); }
+    .new-button-circle { width: 45px; height: 45px; background: #306bc2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 200; }
+    .stats-info { font-weight: 600; color: #333; }
+    .table-container { background: white; border-radius: 12px; border-top: 5px solid #306bc2; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table-header { background: #f8f9fa; color: #666; font-weight: 600; font-size: 14px; text-transform: uppercase; }
+    .table th, .table td { padding: 16px 10px; text-align: center; border-bottom: 1px solid #eee; font-size: 15px; vertical-align: middle; }
+    .avatar-placeholder { width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; color: #a0aec0; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 18px; overflow: hidden; }
+    .operations { display: flex; justify-content: center; gap: 8px; }
+    .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: none; }
+    .btn-view { background: #e8f5e8; color: #2e7d32; border: 2px solid #c8e6c9; }
+    .btn-edit { background: #e3f2fd; color: #1976d2; border: 2px solid #bbdefb; }
+    .btn-archive { background: #fce4ec; color: #c01e26; border: 2px solid #f8bbd9; }
+    
+    
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; }
+    .modal-overlay.show { display: flex; }
+    .modal-caixa { background: #fff; width: 90%; max-width: 700px; border-radius: 12px; border-top: 5px solid #306bc2; padding: 20px; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; color: #306bc2; font-size: 1.2rem; }
+    .modal-conteudo { max-height: 70vh; overflow-y: auto; }
+    .detalhe-grupo h3 { font-size: 1rem; color: #306bc2; border-bottom: 1px solid #eee; margin: 15px 0 10px 0; }
+    .detalhe-item { display: flex; margin-bottom: 5px; align-items: baseline; }
+    .detalhe-item label { font-weight: bold; width: 140px; flex-shrink: 0; }
+    .modal-fechar { background: none; border: none; font-size: 20px; cursor: pointer; }
+
+    
+    @media (max-width: 1024px) {
+        
+        /* 1. Sidebar Fina */
+        .sidebar {
+            width: 70px;
+        }
+
+        /* 2. Esconde Textos */
+        .menu-item span,
+        .logout-button span,
+        .profile-header span, /* Nome do perfil */
+        .header-title span {  /* Texto do topo se tiver */
+            display: none !important;
+        }
+
+        /* 3. Centraliza Ícones */
+        .menu-item, 
+        .logout-button {
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .menu-item i, 
+        .logout-button i {
+            margin-right: 0;
+            font-size: 22px;
+        }
+
+        /* 4. Ajuste da Logo */
+        .logo {
+            padding: 0 10px;
+            margin-top: 20px;
+        }
+        .logo img {
+            max-width: 40px;
+        }
+
+        /* 5. Ajustes Visuais (Remove linhas coloridas no modo mini) */
+        .menu-item::after { display: none; }
+        
+        /* Ajuste da bolinha preta de ativo */
+        .menu-item.active::before {
+            right: 5px;
+        }
+
+        /* 6. Ajustes do Conteúdo */
+        .content-area { padding: 15px; }
+        .header { padding: 0 15px; }
+        
+        /* Ajuste da busca para caber */
+        .search-container { width: 100%; }
+        .search-section { flex-direction: column; align-items: stretch; }
+        .new-button { flex-direction: row; justify-content: center; margin-bottom: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+        <img src="/imagem/logo.png" alt="logo">
+    </div>
+
+    <div class="menu">
+        <a href="/home" class="menu-item">
+            <i class="fas fa-home"></i>
+            <span>INÍCIO</span>
+        </a>
+
+        <a href="/acessar-aluno" class="menu-item active">
+            <i class="fas fa-address-card"></i>
+            <span>CADASTRO</span>
+        </a>
+
+        <a href="/matriculas" class="menu-item">
+            <i class="fas fa-user-graduate"></i>
+            <span>MATRÍCULA</span>
+        </a>
+
+        <a href="/professores" class="menu-item">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>PROFESSOR</span>
+        </a>
+
+        <a href="/turmas" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span>TURMA</span>
+        </a>
+
+        <a href="/financeiro" class="menu-item">
+            <i class="fas fa-dollar-sign"></i>
+            <span>FINANCEIRO</span>
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="/login" class="logout-button" onclick="return  confirm('Deseja realmente sair do sistema?')">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>SAIR</span>
+        </a>
+    </div>
+</div>
+
+  <div class="main-content">
+    <div class="header">
+      <div class="header-title"><i class="fas fa-user-graduate"></i><span>Acessar <b>ALUNOS</b></span></div>
+      <div class="profile" id="profile-toggle">
+        <div class="profile-header"><i class="fas fa-user-circle" style="font-size:28px;"></i> <i class="fas fa-chevron-down"></i></div>
+        <div class="profile-dropdown" id="profile-dropdown-menu">
+            <a href="/meuperfil"><i class="fas fa-user"></i> Meu perfil</a>
+            <a href="/mensalidade"><i class="fas fa-file-invoice-dollar"></i> Mensalidade</a>
+            <a href="/arquivados"><i class="fas fa-archive"></i> Arquivados</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <div class="search-section">
+        <div class="search-container">
+          <div class="search-icon"><i class="fas fa-search"></i></div>
+          <input type="text" class="search-input" placeholder="Pesquisar aluno...">
+        </div>
+        <div class="new-button" onclick="window.location.href='/cadastro-aluno'">
+          <div class="new-button-circle">+</div>
+          <div class="new-text">Novo Aluno</div>
+        </div>
+        <div class="stats-info">Total de Alunos: <%= (typeof alunos !== 'undefined') ? alunos.length : 0 %></div>
+      </div>
+
+      <div class="table-container">
+        <table class="table">
+          <thead class="table-header">
+            <tr>
+                <th style="width: 80px;">Foto</th>
+                <th>Nome</th>
+                <th>Responsável</th>
+                <th style="width: 250px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="alunosTableBody">
+            <% if (typeof alunos !== 'undefined' && alunos.length > 0) { %>
+              <% alunos.forEach(aluno => { %>
+                <tr>
+                  <td>
+                      <div class="avatar-placeholder">
+                        <% if (aluno.foto) { %>
+                           <img src="<%= aluno.foto %>" alt="Foto" style="width:100%; height:100%; object-fit:cover;">
+                        <% } else { %>
+                           <i class="fas fa-user"></i>
+                        <% } %>
+                      </div>
+                  </td>
+                  <td><%= aluno.nome %></td>
+                  <td><%= aluno.responsavel %></td>
+                  <td>
+                    <div class="operations">
+                      <button class="btn-action btn-view" data-id="<%= aluno.id %>"><i class="fas fa-eye"></i> Ver</button>
+                      <a href="/acessar-aluno/editar/<%= aluno.id %>" class="btn-action btn-edit"><i class="fas fa-edit"></i> Editar</a>
+                      <form action="/acessar-aluno/arquivar/<%= aluno.id %>" method="POST" style="display:inline;" onsubmit="return confirm('Arquivar este aluno?');">
+                        <button type="submit" class="btn-action btn-archive"><i class="fas fa-archive"></i> Arquivar</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr><td colspan="4" style="text-align:center; padding:20px;">Nenhum aluno encontrado.</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detalhesModal">
+    <div class="modal-caixa">
+      <div class="modal-header">
+        <span>Detalhes do <b>ALUNO</b></span>
+        <button class="modal-fechar" id="modal-fechar">&times;</button>
+      </div>
+      <div class="modal-conteudo">
+        <div class="detalhe-grupo">
+          <h3>Pessoal</h3>
+          <div class="detalhe-item"><label>Nome:</label><span id="m-nome"></span></div>
+          <div class="detalhe-item"><label>Nascimento:</label><span id="m-nasc"></span></div>
+          <div class="detalhe-item"><label>CPF:</label><span id="m-cpf"></span></div>
+          <div class="detalhe-item"><label>Sexo:</label><span id="m-sexo"></span></div>
+          <div class="detalhe-item"><label>Naturalidade:</label><span id="m-nat"></span></div>
+        </div>
+        <div class="detalhe-grupo">
+          <h3>Responsável</h3>
+          <div class="detalhe-item"><label>Nome:</label><span id="m-resp"></span></div>
+          <div class="detalhe-item"><label>Tel:</label><span id="m-tel"></span></div>
+          <div class="detalhe-item"><label>Email:</label><span id="m-email"></span></div>
+        </div>
+        <div class="detalhe-grupo">
+          <h3>Endereço</h3>
+          <div class="detalhe-item"><label>CEP:</label><span id="m-cep"></span></div>
+          <div class="detalhe-item"><label>Cidade:</label><span id="m-cidade"></span></div>
+          <div class="detalhe-item"><label>Estado:</label><span id="m-estado"></span></div>
+          <div class="detalhe-item"><label>Logradouro:</label><span id="m-rua"></span></div>
+          <div class="detalhe-item"><label>Número:</label><span id="m-numero"></span></div>
+          <div class="detalhe-item"><label>Bairro:</label><span id="m-bairro"></span></div>
+        </div>
+        <div class="detalhe-grupo">
+          <h3>Saúde / Observações</h3>
+          <div class="detalhe-item"><label>Observações:</label><span id="m-obs"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const pToggle = document.getElementById('profile-toggle');
+    const pMenu = document.getElementById('profile-dropdown-menu');
+    if(pToggle){ pToggle.onclick = (e) => { e.stopPropagation(); pMenu.classList.toggle('active'); };
+    document.onclick = () => pMenu.classList.remove('active'); }
+    
+    const search = document.querySelector('.search-input');
+    const rows = document.querySelectorAll('#alunosTableBody tr');
+    if(search){ search.oninput = (e) => { const val = e.target.value.toLowerCase();
+    rows.forEach(row => { row.style.display = row.textContent.toLowerCase().includes(val) ? '' : 'none'; }); }; }
+
+    const modal = document.getElementById('detalhesModal');
+    const closeBtn = document.getElementById('modal-fechar');
+    
+    document.querySelectorAll('.btn-view').forEach(btn => {
+        btn.onclick = async () => {
+            const id = btn.dataset.id;
+            try {
+                // CORREÇÃO: Adicionadas crases (`) no fetch
+                const res = await fetch(`/acessar-aluno/ver/${id}`);
+                const data = await res.json();
+                
+                document.getElementById('m-nome').textContent = data.nome;
+                document.getElementById('m-nasc').textContent = data.dataNascimento;
+                document.getElementById('m-cpf').textContent = data.cpf;
+                document.getElementById('m-sexo').textContent = data.sexo;
+                document.getElementById('m-nat').textContent = data.naturalidade;
+                
+                document.getElementById('m-resp').textContent = data.responsavel;
+                document.getElementById('m-tel').textContent = data.telefone;
+                document.getElementById('m-email').textContent = data.email;
+                
+                document.getElementById('m-cep').textContent = data.cep;
+                document.getElementById('m-cidade').textContent = data.cidade;
+                document.getElementById('m-estado').textContent = data.estado;
+                document.getElementById('m-rua').textContent = data.logradouro; 
+                document.getElementById('m-numero').textContent = data.numero;
+                document.getElementById('m-bairro').textContent = data.bairro;
+                
+                let textoObs = data.observacoes;
+                // CORREÇÃO: Adicionadas crases (`) na interpolação das strings
+                if(data.alergias && data.alergias.length > 0) textoObs += ` | Alergias: ${data.alergias}`;
+                if(data.deficiencias && data.deficiencias.length > 0) textoObs += ` | Deficiência: ${data.deficiencias}`;
+                
+                document.getElementById('m-obs').textContent = textoObs;
+                
+                modal.classList.add('show');
+            } catch(e) { 
+                console.error(e);
+                alert('Erro ao carregar detalhes.'); 
+            }
+        };
+    });
+    
+    closeBtn.onclick = () => modal.classList.remove('show');
+    modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('show'); };
+  </script>
+</body>
+</html>

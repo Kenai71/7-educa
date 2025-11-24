@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Allerta&family=Kodchasan:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Seteeduca - Cadastro de Professor</title>
+  <style>
+    :root {
+      --sidebar-width: 280px;
+    }
+
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #e8e8e8;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+<<<<<<< HEAD
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, #FFF4DF 0%, #f8f0e3 100%);
+      position: fixed; 
+      left: 0;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar a {
+      text-decoration: none;
+    }
+
+=======
+    width: 280px;
+    height: 100vh; /* Ocupa a altura total */
+    background: linear-gradient(180deg, #FFF4DF 0%, #f8f0e3 100%);
+    
+    /* Configuração de Posição Fixa */
+    position: fixed; 
+    left: 0;
+    top: 0;
+    z-index: 1000; /* Garante que fique na frente, mas não tanto que quebre modais */
+    
+    /* Organização interna */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinha tudo no topo */
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+     a {
+    text-decoration: none;
+                }
+}
+>>>>>>> 557416a29dca9e3e1d10372f43526b556d2d13b0
+    .logo {
+      padding: 0px 40px;
+      text-align: center;
+      margin-bottom: 25px;
+      margin-top: 30px;
+    }
+
+    .logo img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .menu {
+      flex: 1;
+      padding: 20px 18px;
+      overflow-y: auto;
+    }
+
+    .menu-item {
+      padding: 30px 20px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      overflow: visible;
+      color: black;
+    }
+
+    .menu-item i {
+      margin-right: 15px;
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .menu-item span {
+      z-index: 2;
+      font-size: 15px;
+    }
+
+    .menu-item:hover {
+      background-color: #6c757d21;
+    }
+
+    .menu-item::after {
+      padding: 0 10px;
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 20px;
+      height: 2px;
+      width: 0px;
+      transition: width 0.3s ease;
+      border-radius: 1px;
+    }
+
+    .menu-item:hover::after,
+    .menu-item.active::after {
+      width: calc(100% - 40px);
+    }
+
+    .menu-item:nth-child(1)::after { background-color: #F4BF27; }
+    .menu-item:nth-child(2)::after { background-color: #306bc2; }
+    .menu-item:nth-child(3)::after { background-color: #9747FF; }
+    .menu-item:nth-child(4)::after { background-color: #F88C12; }
+    .menu-item:nth-child(5)::after { background-color: #D22A2A; }
+    .menu-item:nth-child(6)::after { background-color: #59C631; }
+
+    .menu-item.active {
+      background-color: rgba(128, 128, 128, 0.356);
+      color: #333;
+      font-weight: 600;
+    }
+
+    .menu-item.active::before {
+      content: '';
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+      z-index: 2;
+    }
+
+<<<<<<< HEAD
+    .sidebar-footer {
+      padding: 20px 18px;
+      margin-top: 10rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+=======
+    .seteeduca {
+      color: #333;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+  .sidebar-footer {
+    padding: 20px 18px;
+    margin-top: 10rem; /* A distância que definimos antes */
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+>>>>>>> 557416a29dca9e3e1d10372f43526b556d2d13b0
+    
+    .logout-button {
+      padding: 16px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: #333;
+      width: 100%;
+      background: transparent;
+      border: none;
+    }
+
+    .logout-button i {
+      margin-right: 15px;
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .logout-button:hover {
+      background-color: rgba(210, 42, 42, 0.1); 
+      color: #ef7215; 
+      font-weight: 600;
+    }
+
+    .main-content {
+<<<<<<< HEAD
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+=======
+    /* O SEGREDO: Margem esquerda igual à largura da sidebar */
+    margin-left: 280px; 
+    width: calc(100% - 280px); /* Ocupa o restante da tela */
+    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+>>>>>>> 557416a29dca9e3e1d10372f43526b556d2d13b0
+
+    .header {
+      background: #ef7215;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      width: 100%;
+    }
+
+    .header-title {
+      display: flex; 
+      align-items: center;
+      position: relative; 
+      top: 0.7vh;
+      gap: 10px; 
+      font-size: 1.5rem; 
+      color: rgb(255, 255, 255); 
+      font-family: 'Kodchasan', sans-serif;
+    }
+
+    .header-title i {
+      margin-right: 15px;
+      font-size: 28px;
+    }
+
+    .content-area {
+      padding: 30px;
+      background: #ffffff;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+    }
+    
+    .caixa {
+      width: 90%; 
+      max-width: 1100px; 
+      min-height: 500px;
+      background-color: #fff; 
+      border-radius: 12px;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+      padding: 40px; 
+      margin-top: 20px;
+      border-top: 5px solid #ef7215;
+      transition: transform 0.3s;
+    }
+    
+    .caixa:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    form { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 25px; 
+      width: 100%; 
+    }
+    
+    .campo { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 10px; 
+      width: 100%; 
+    }
+    
+    label { 
+      font-weight: 600; 
+      font-size: 1.1rem; 
+      color: #333;
+      margin-left: 10px;
+    }
+    
+    input, select {
+      padding: 14px 18px; 
+      border: 2px solid #ddd; 
+      border-radius: 8px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      font-size: 1rem; 
+      width: 100%;
+      background-color: #fff;
+      transition: all 0.3s;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: #ef7215;
+      box-shadow: 0 0 0 3px rgba(239, 114, 21, 0.2);
+    }
+    
+    .link-cadastrar {
+      width: 220px; 
+      height: 55px; 
+      background-color: #ef7215;
+      color: white; 
+      border: none; 
+      border-radius: 8px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer; 
+      margin: 30px auto 0;
+      transition: all 0.3s; 
+      box-shadow: 0 4px 8px rgba(239, 114, 21, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .link-cadastrar:hover { 
+      background-color: #d66314; 
+      transform: scale(1.05); 
+      box-shadow: 0 6px 12px rgba(239, 114, 21, 0.4);
+    }
+    
+    .link-cadastrar::before {
+      content: "+";
+      font-size: 1.2rem;
+      line-height: 1;
+      display: inline-block;
+    }
+  
+    .alerta-erro {
+      padding: 15px;
+      margin: 15px auto; 
+      border-radius: 8px; 
+      background-color: #ffe0e0;
+      color: #cc0000;
+      border: 1px solid #cc0000; 
+      font-weight: bold;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    /* Profile dropdown */
+    .profile {
+      position: relative;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      border-radius: 50px;
+      transition: background-color 0.2s ease;
+    }
+
+    .profile-header:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .profile-icon {
+      font-size: 38px;
+      color: white;
+    }
+
+    .profile-arrow {
+      font-size: 14px;
+      margin-left: 8px;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      top: 110%;
+      right: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 200px;
+      z-index: 1001;
+      overflow: hidden;
+      padding: 8px 0;
+      border: 1px solid #eee;
+    }
+
+    .profile-dropdown.show {
+      display: block;
+    }
+
+    .profile-dropdown a {
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      text-decoration: none;
+      color: #444;
+      font-size: 15px;
+      transition: background-color 0.2s ease;
+    }
+
+    .profile-dropdown a:hover {
+      background-color: #f5f5f5;
+    }
+
+    .profile-dropdown a i {
+      width: 20px;
+      margin-right: 15px;
+      color: #666;
+      text-align: center;
+    }
+
+    /* ========================================
+       RESPONSIVIDADE - MEDIA QUERIES
+    ======================================== */
+
+    /* Tablets e telas médias */
+    @media (max-width: 1024px) {
+      .content-area {
+        padding: 20px;
+      }
+
+      .caixa {
+        padding: 30px;
+      }
+
+      .header-title {
+        font-size: 1.3rem;
+      }
+
+      label {
+        font-size: 1rem;
+      }
+
+      input, select {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+      }
+
+      .link-cadastrar {
+        width: 200px;
+        height: 50px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Tablets pequenos */
+    @media (max-width: 768px) {
+      :root {
+        --sidebar-width: 70px;
+      }
+
+      /* Esconde textos da sidebar */
+      .menu-item span,
+      .logout-button span {
+        display: none;
+      }
+
+      .menu-item i,
+      .logout-button i {
+        margin-right: 0;
+      }
+
+      .sidebar .logo {
+        padding: 0 10px;
+      }
+
+      .sidebar .logo img {
+        max-width: 50px;
+      }
+
+      .sidebar-footer {
+        padding: 10px 5px;
+        margin-top: 2rem;
+      }
+
+      .menu {
+        padding: 10px 5px;
+      }
+
+      .menu-item {
+        padding: 15px 5px;
+        justify-content: center;
+      }
+
+      .menu-item::after {
+        display: none;
+      }
+
+      .menu-item.active::before {
+        right: 5px;
+      }
+
+      .main-content {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+      }
+
+      /* Header responsivo */
+      .header {
+        padding: 0 15px;
+        height: 70px;
+      }
+
+      .header-title {
+        font-size: 1.1rem;
+      }
+
+      .header-title i {
+        font-size: 22px;
+        margin-right: 8px;
+      }
+
+      .profile-icon {
+        font-size: 32px;
+      }
+
+      /* Área de conteúdo */
+      .content-area {
+        padding: 15px;
+      }
+
+      .caixa {
+        width: 95%;
+        padding: 25px;
+      }
+
+      form {
+        gap: 20px;
+      }
+
+      .campo {
+        gap: 8px;
+      }
+
+      label {
+        font-size: 1rem;
+        margin-left: 5px;
+      }
+
+      input, select {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+      }
+
+      .link-cadastrar {
+        width: 100%;
+        max-width: 250px;
+      }
+    }
+
+    /* Smartphones */
+    @media (max-width: 480px) {
+      .header {
+        height: 60px;
+      }
+
+      .header-title {
+        font-size: 1rem;
+      }
+
+      .header-title i {
+        font-size: 18px;
+        margin-right: 5px;
+      }
+
+      .profile-icon {
+        font-size: 28px;
+      }
+
+      .content-area {
+        padding: 10px;
+      }
+
+      .caixa {
+        width: 100%;
+        padding: 20px;
+        margin-top: 10px;
+      }
+
+      form {
+        gap: 18px;
+      }
+
+      label {
+        font-size: 0.95rem;
+      }
+
+      input, select {
+        padding: 11px 14px;
+        font-size: 0.9rem;
+      }
+
+      .link-cadastrar {
+        width: 100%;
+        height: 48px;
+        font-size: 0.95rem;
+        margin-top: 20px;
+      }
+
+      .alerta-erro {
+        font-size: 0.9rem;
+        padding: 12px;
+      }
+    }
+
+    /* Telas muito pequenas */
+    @media (max-width: 360px) {
+      :root {
+        --sidebar-width: 60px;
+      }
+
+      .header-title span {
+        font-size: 0.9rem;
+      }
+
+      .caixa {
+        padding: 15px;
+      }
+
+      label {
+        font-size: 0.9rem;
+      }
+
+      input, select {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <div class="logo">
+        <img src="/logo.png" alt="logo">
+      </div>
+
+      <div class="menu">
+        <a href="/home" class="menu-item">
+          <i class="fas fa-home"></i>
+          <span>INÍCIO</span>
+        </a>
+
+        <a href="/acessar-aluno" class="menu-item">
+          <i class="fas fa-address-card"></i>
+          <span>CADASTRO</span>
+        </a>
+
+        <a href="/matriculas" class="menu-item">
+          <i class="fas fa-user-graduate"></i>
+          <span>MATRÍCULA</span>
+        </a>
+
+        <a href="/professores" class="menu-item active">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <span>PROFESSOR</span>
+        </a>
+
+        <a href="/turmas" class="menu-item">
+          <i class="fas fa-users"></i>
+          <span>TURMA</span>
+        </a>
+
+        <a href="/financeiro" class="menu-item">
+          <i class="fas fa-dollar-sign"></i>
+          <span>FINANCEIRO</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="/login/sair" class="logout-button" onclick="return confirm('Deseja realmente sair do sistema?')">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Sair</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="header">
+      <div class="header-title">
+        <i class="fas fa-users"></i>
+        <span>Cadastrar <b>PROFESSORES</b></span>
+      </div>
+      <div class="profile" id="profile-toggle">
+        <div class="profile-header">
+          <i class="fas fa-user-circle profile-icon"></i>
+          <i class="fas fa-chevron-down profile-arrow"></i>
+        </div>
+        <div class="profile-dropdown" id="profile-dropdown-menu">
+          <a href="/meuperfil"><i class="fas fa-user"></i> Meu perfil</a>
+          <a href="/mensalidade"><i class="fas fa-file-invoice-dollar"></i> Mensalidade</a>
+          <a href="/arquivados"><i class="fas fa-archive"></i> Arquivados</a>
+        </div>
+      </div>
+    </div>
+
+      <!-- Content Area -->
+    <div class="content-area">
+      <div class="caixa">
+
+       <% if (typeof mensagem !== 'undefined' && mensagem) { %>
+    <div class="alerta-erro">
+        <%= mensagem %>
+    </div>
+    <% } %>
+       <form action="/professores/cadastro" method="POST" id="formCadastro">
+          <div class="campo">
+            <label for="professor">Nome:</label>
+            <input type="text" id="professor" name="professor" placeholder="Nome completo do professor" required
+            value="<%= typeof dadosAnteriores !== 'undefined' ? dadosAnteriores.nome : '' %>">
+
+          </div>
+          <div class="campo">
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" name="cpf" placeholder="CPF do professor" required
+            value="<%= typeof dadosAnteriores !== 'undefined' ? dadosAnteriores.cpf : '' %>">
+          </div>
+          <div class="campo">
+            <label for="Telefone">Telefone:</label>
+            <input type="text" id="Telefone" name="Telefone" placeholder="Telefone para contato do professor" required
+            value="<%= typeof dadosAnteriores !== 'undefined' ? dadosAnteriores.telefone : '' %>">
+          </div>
+
+          <div class="campo">
+            <label for="Email">Email:</label>
+            <input type="text" id="Email" name="Email" placeholder="Email do professor" required
+            value="<%= typeof dadosAnteriores !== 'undefined' ? dadosAnteriores.email : '' %>">
+          </div>
+
+          <div class="campo">
+            <label for="Endereço">Endereço:</label>
+            <input type="text" id="Endereço" name="Endereço" placeholder="Endereço do professor" required
+            value="<%= typeof dadosAnteriores !== 'undefined' ? dadosAnteriores.endereço : '' %>">
+          </div>
+
+          <div class="campo">
+            <label for="classificação">Classificação:</label>
+            <select id="classificação" name="classificação" required
+            value="<%= typeof dadosAnteriores !== 'undefined' ? dadosAnteriores.classificação : '' %>">
+              <option value="" disabled selected>Selecione o tipo do trabalho</option>
+              <option value="Mensal">Mensal</option>
+              <option value="Diarista">Diarista</option>
+              <option value="Horista">Horista</option>
+              <option value="Semanal">Semanal</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="link-cadastrar">Cadastrar professor</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="confirmModal">
+    <div class="modal-content">
+      <p id="modalMessage"></p>
+      <div class="modal-buttons">
+        <button class="ok">Ok</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // LÓGICA DO MENU DROPDOWN
+    const profileToggle = document.getElementById('profile-toggle');
+    const dropdownMenu = document.getElementById('profile-dropdown-menu');
+    const profileArrow = document.querySelector('.profile-arrow');
+
+    if (profileToggle && dropdownMenu && profileArrow) {
+      profileToggle.addEventListener('click', function (event) {
+        event.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+        profileArrow.style.transform = dropdownMenu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+
+      window.addEventListener('click', function () {
+        if (dropdownMenu.classList.contains('show')) {
+          dropdownMenu.classList.remove('show');
+          profileArrow.style.transform = 'rotate(0deg)';
+            // Navegar para a página correspondente
+            if (rotas[pagina]) {
+                window.location.href = rotas[pagina];
+            } else {
+                console.warn(`Rota não encontrada para: ${pagina}`);
+                // Fallback - mostrar modal informativo
+                showModal(`Página "${pagina.toUpperCase()}" em desenvolvimento.\nEm breve estará disponível!`);
+            }
+        }
+    document.addEventListener('DOMContentLoaded', function() {
+      const logoutButton = document.querySelector('.logout-button');
+      logoutButton.addEventListener('click', function() {
+        if ( confirm('Deseja realmente sair do sistema?')) {
+          window.location.href = '/login/sair'; // Redireciona para a página de login
+        }
+      });
+    }
+
+    // Recarregar página ao voltar
+    window.addEventListener("pageshow", function (event) {
+      var historyTraversal = event.persisted || 
+        (typeof window.performance != "undefined" && 
+        window.performance.navigation.type === 2);
+      if (historyTraversal) {
+        window.location.reload();
+      }
+    });
+  </script>
+</body>
+</html>

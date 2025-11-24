@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background-image: url(imagem/ChatGPT\ Image\ 22_09_2025\,\ 17_12_14.png);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #FCFCFC;
+            background-image: var(--background-image);
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .header {
+            background-color: #fade939f;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 35px;
+            font-weight: 550;
+            color: #2c3e50;
+        }
+
+        .header-left .user-icon {
+            width: 60px;
+            height: auto;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .header-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .profile {
+            position: relative;
+            cursor: pointer;
+            z-index: 150;
+            padding: 8px 10px;
+            border-radius: 10px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .profile:hover {
+            background-color: #4e4e4e18;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-header .profile-icon {
+            font-size: 43px;
+            color: #000000;
+        }
+        
+        .home-icon, .profile-icon:not(.profile-header .profile-icon) { 
+             display: none;
+        }
+
+        .profile-arrow {
+            font-size: 14px;
+            color: #2c3e50;
+            transition: transform 0.3s ease;
+        }
+
+        .profile.active .profile-arrow {
+            transform: rotate(180deg);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 100%; 
+            right: 0;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 200px;
+            display: none; 
+            padding: 10px 0;
+            margin-top: 10px; 
+        }
+        
+        .profile-dropdown a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: #f1f1f1;
+            color: #f0ad4e;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            margin: 8px 0;
+            overflow: hidden;
+            background-color: #e9ecef;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-section h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .avatar-container {
+            position: relative;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #fcd66e;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .camera-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 35px;
+            height: 35px;
+            background-color: #fcd66e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-fields {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .password-group {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        .password-group .form-group {
+            flex-grow: 1;
+        }
+
+        .form-group label {
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s, background-color 0.3s;
+            background-color: #f0f0f0;
+        }
+        
+        .form-group input:not([readonly]) {
+            background-color: white;
+            border-color: #fff4c2;
+        }
+
+        .form-group input:focus {
+            border-color: #fcd66e;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .save-btn, .edit-btn, .change-password-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .save-btn {
+            background: #fcd66e;
+            color: #2c3e50;
+        }
+        
+        .edit-btn, .change-password-btn {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .edit-address-btn {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .address-section {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 25px;
+            margin-top: 25px;
+        }
+
+        .address-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .address-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .address-group {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .address-group.full-width {
+            flex: 1 1 100%;
+        }
+
+        .address-group.half-width {
+            flex: 1 1 calc(50% - 7.5px);
+        }
+
+        .address-group label {
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .address-field {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .address-field:focus {
+            border-color: #fcd66e;
+            background-color: #f8fff9;
+            box-shadow: 0 0 0 3px rgba(168, 230, 207, 0.1);
+        }
+
+        .address-field:disabled {
+            background-color: #f5f5f5;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .address-field[readonly] {
+            background-color: #f9f9f9;
+            border-color: #ddd;
+        }
+
+        .cep-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .cep-field {
+            padding-right: 45px;
+        }
+
+        .cep-search-btn {
+            position: absolute;
+            right: 10px;
+            background: #fff6a5;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #2c3e50;
+            transition: all 0.2s ease;
+        }
+        
+        .cep-search-btn:disabled {
+            background: #e0e0e0;
+            cursor: not-allowed;
+            color: #999;
+            transform: none;
+        }
+
+        .cep-error, .cep-loading {
+            display: none;
+            font-size: 12px;
+            margin-top: 5px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .cep-error.show, .cep-loading.show {
+            display: flex;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .address-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .clear-address {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e9ecef;
+        }
+        
+        .edit-address-btn {
+            background: #e0e0e0;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .save-address {
+            background: #fff6a5;
+            color: #2c3e50;
+            border: 2px solid #ffbb00;
+        }
+        
+        /* --- ESTILOS DO MODAL DE SENHA CORRIGIDOS --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .password-modal {
+            background: white;
+            padding: 35px 30px 30px 30px; /* Ajuste para dar espaço ao 'X' */
+            border-radius: 10px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close-modal { /* Posição absoluta para o "X" no canto superior direito */
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 28px; 
+            cursor: pointer;
+            color: #999; 
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+            z-index: 100;
+        }
+        
+        .close-modal:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .modal-header {
+            display: block; /* Remove o flexbox original para centralizar o título */
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            justify-content: space-between;
+        }
+
+        .modal-cancel-btn, .modal-save-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .modal-save-btn {
+            background: #fcd66e;
+            color: #2c3e50;
+        }
+        /* --- FIM DOS ESTILOS DO MODAL DE SENHA CORRIGIDOS --- */
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <img src="imagem/perfil.png" class="user-icon" alt="Ícone de Perfil">
+            <span>Meu perfil</span>
+        </div>
+        
+        <div class="header-right">
+            <img 
+                src="imagem/home3.png" 
+                class="header-icon" 
+                onclick="navegarPara('inicio')" 
+                alt="Home Icon" 
+                title="Início"
+            >
+         
+            <div class="profile" id="profile-toggle" onclick="toggleDropdown(event)">
+                <div class="profile-header">
+                    <i class="fas fa-user-circle profile-icon"></i>
+                    <i class="fas fa-chevron-down profile-arrow"></i>
+                </div>
+   
+                <div class="profile-dropdown" id="profile-dropdown-menu">
+                    <a href="/meuperfil" onclick="navegarPara('meu-perfil')"><i class="fas fa-user"></i> Meu perfil</a>
+                    <a href="/mensalidade" onclick="navegarPara('mensalidade')"><i class="fas fa-file-invoice-dollar"></i> Mensalidade</a>
+                    <a href="/arquivados" onclick="navegarPara('arquivados')"><i class="fas fa-archive"></i> Arquivados</a>
+         
+                    <div class="dropdown-divider"></div>
+                    <a href="/login" onclick="navegarPara('login')"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="profile-card">
+         
+            <div class="profile-section">
+                <h2>Informações do perfil</h2>
+                
+                <div class="profile-info">
+                    <div class="avatar-container">
+                        
+                        <div class="avatar">
+                            <img src="<%= perfil.creche.foto_url ? perfil.creche.foto_url : 'imagem/perfil-de-usuario.png' %>" alt="Avatar do usuário">
+                        </div>
+                        <div class="camera-icon">📷</div>
+                  
+                    </div>
+                    
+                    <div class="form-fields">
+                        <div class="form-group">
+                            <label for="creche">Nome da creche:</label>
+                            <input type="text" id="creche" name="creche" value="<%= perfil.creche.nome %>" readonly>
+                        </div>
+                        
+                  
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" id="email" name="email" value="<%= perfil.creche.email %>" readonly>
+                        </div>
+     
+                    
+                        <div class="password-group">
+                            <div class="form-group">
+                           
+                                <label for="password">Senha:</label>
+                                <input type="password" id="password" name="password" value="********" readonly>
+                            </div>
+                            <div class="button-group">
+                                <button class="change-password-btn" type="button">Alterar Senha</button>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="edit-btn" type="button">Editar</button>
+                            <button class="save-btn" type="submit" style="display: none;">Salvar alterações</button>
+                        </div>
+      
+                    </div>
+                </div>
+            </div>
+
+            <div class="address-section">
+                <h2>Endereço</h2>
+                
+             
+                <div class="address-form">
+                    <div class="address-row">
+                        <div class="address-group full-width">
+                            <label for="cep">CEP:</label>
+                            <div class="cep-container">
+                                <input type="text" id="cep" name="cep" class="address-field cep-field" placeholder="00000-000" maxlength="9" value="<%= perfil.endereco.cep %>" readonly>
+                                <button type="button" class="cep-search-btn" id="searchCep" title="Buscar CEP" disabled>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="cep-error" id="cepError">CEP não encontrado</div>
+                        </div>
+                    </div>
+
+                    <div class="address-row">
+                        <div class="address-group full-width">
+                            <label for="logradouro">Rua/Avenida:</label>
+                            <input type="text" id="logradouro" name="logradouro" class="address-field" value="<%= perfil.endereco.rua %>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="address-row">
+                        <div class="address-group half-width">
+                            <label for="bairro">Bairro:</label>
+                            <input type="text" id="bairro" name="bairro" class="address-field" value="<%= perfil.endereco.bairro %>" readonly>
+                        </div>
+                        
+                        <div class="address-group half-width">
+                            <label for="cidade">Cidade:</label>
+                            <input type="text" id="cidade" name="cidade" class="address-field" value="<%= perfil.endereco.cidade %>" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="address-actions">
+                        <button class="address-btn edit-address-btn" type="button">Editar Endereço</button>
+                        <button class="address-btn clear-address" type="button" style="display: none;">Limpar</button>
+                        <button class="address-btn save-address" type="submit" style="display: none;">Salvar Endereço</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="password-modal-overlay">
+        <div class="password-modal">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title">Alterar Senha</h3>
+            </div>
+            <form class="password-form">
+                <div class="password-input-group">
+                    <label for="current-password">Senha Atual:</label>
+                    <input type="password" id="current-password" class="password-input" required>
+                </div>
+                <div class="password-input-group">
+                    <label for="new-password">Nova Senha:</label>
+                    <input type="password" id="new-password" class="password-input" required>
+                </div>
+                <div class="password-input-group">
+                    <label for="confirm-password">Confirmar Nova Senha:</label>
+                    <input type="password" id="confirm-password" class="password-input" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="modal-cancel-btn">Cancelar</button>
+                    <button type="submit" class="modal-save-btn">Salvar Nova Senha</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Função para alternar o dropdown do perfil
+        function toggleDropdown(event) {
+            const dropdown = document.getElementById('profile-dropdown-menu');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            document.getElementById('profile-toggle').classList.toggle('active');
+            event.stopPropagation();
+        }
+
+        document.addEventListener('click', (event) => {
+            const profileToggle = document.getElementById('profile-toggle');
+            const dropdownMenu = document.getElementById('profile-dropdown-menu');
+            if (profileToggle && dropdownMenu && !profileToggle.contains(event.target) && dropdownMenu.style.display === 'block') {
+                dropdownMenu.style.display = 'none';
+                profileToggle.classList.remove('active');
+            }
+        });
+        
+        function navegarPara(rota) {
+            if (rota === 'inicio') {
+                window.location.href = '/inicio';
+            } else if (rota === 'login') {
+                window.location.href = '/login'; 
+            } else {
+                // Outras rotas
+            }
+        }
+
+        // ----------------------------------------------------
+        // LÓGICA DE EDIÇÃO DO PERFIL (Nome da creche e E-mail)
+        // ----------------------------------------------------
+
+        function toggleEditMode(isEditing) {
+            const fields = document.querySelectorAll('#creche, #email');
+            const editBtn = document.querySelector('.edit-btn');
+            const saveBtn = document.querySelector('.save-btn');
+
+            fields.forEach(field => {
+                field.readOnly = !isEditing;
+            });
+
+            if (isEditing) {
+                editBtn.style.display = 'none';
+                saveBtn.style.display = 'inline-block';
+            } else {
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+            }
+        }
+
+        // 1. Ação do botão "Editar" (Informações do Perfil)
+        document.querySelector('.edit-btn').addEventListener('click', () => {
+            toggleEditMode(true);
+        });
+
+        // 2. Ação do botão "Salvar alterações" (Informações do Perfil) - IMPLEMENTAÇÃO DO FETCH
+        document.querySelector('.save-btn').addEventListener('click', async (e) => {
+            // e.preventDefault(); 
+
+            const nomeCreche = document.getElementById('creche').value;
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch('/meuperfil/info', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome_creche: nomeCreche, email: email })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message || 'Perfil atualizado com sucesso!');
+                    toggleEditMode(false);
+                } else {
+                    alert(`Erro ao salvar perfil: ${result.error || 'Verifique os dados e tente novamente.'}`);
+                }
+            } catch (error) {
+                console.error('Erro na requisição de perfil:', error);
+                alert('Erro de conexão com o servidor ao salvar o perfil.');
+            }
+        });
+
+        // ----------------------------------------------------
+        // LÓGICA DO MODAL ALTERAR SENHA (Open/Close e Submission)
+        // ----------------------------------------------------
+        
+        const passwordModalOverlay = document.getElementById('password-modal-overlay');
+
+        // Abrir Modal
+        document.querySelector('.change-password-btn').addEventListener('click', () => {
+            if (passwordModalOverlay) {
+                passwordModalOverlay.classList.add('show');
+            }
+        });
+
+        // Fechar Modal (botão Cancelar e X)
+        document.querySelectorAll('#password-modal-overlay .close-modal, #password-modal-overlay .modal-cancel-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                passwordModalOverlay.classList.remove('show');
+            });
+        });
+
+        // LÓGICA DE ENVIO DE SENHA 
+        const savePasswordBtn = document.querySelector('#password-modal-overlay .modal-save-btn'); 
+
+        if (savePasswordBtn) {
+            savePasswordBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const oldPassword = document.getElementById('current-password').value; 
+                const newPassword = document.getElementById('new-password').value;     
+                const confirmPassword = document.getElementById('confirm-password').value; 
+
+                if (newPassword !== confirmPassword) {
+                    alert('A nova senha e a confirmação de senha não coincidem.');
+                    return;
+                }
+                
+                if (!oldPassword || !newPassword || !confirmPassword) {
+                    alert('Por favor, preencha todos os campos de senha.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/meuperfil/senha', { 
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            senhaAntiga: oldPassword, 
+                            senhaNova: newPassword 
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        alert(result.message || 'Senha alterada com sucesso!');
+                        // Fechar o modal
+                        passwordModalOverlay.classList.remove('show');
+                        // Limpar campos
+                        document.getElementById('current-password').value = ''; 
+                        document.getElementById('new-password').value = '';
+                        document.getElementById('confirm-password').value = '';
+                    } else {
+                        alert(`Erro ao alterar senha: ${result.error || 'Verifique as senhas e tente novamente.'}`);
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição de alteração de senha:', error);
+                    alert('Erro de conexão com o servidor ao tentar alterar a senha.');
+                }
+            });
+        }
+
+
+        // ----------------------------------------------------
+        // LÓGICA DE EDIÇÃO DO ENDEREÇO (Com Rua/Avenida Editável)
+        // ----------------------------------------------------
+
+        function toggleAddressEditMode(isEditing) {
+            // Campos de endereço (CEP, Rua/Avenida, Bairro, Cidade)
+            const addressFields = document.querySelectorAll('#cep, #logradouro, #bairro, #cidade'); 
+            const editAddressBtn = document.querySelector('.edit-address-btn');
+            const saveAddressBtn = document.querySelector('.save-address');
+            const clearAddressBtn = document.querySelector('.clear-address');
+            const cepSearchBtn = document.getElementById('searchCep');
+
+            addressFields.forEach(field => {
+                // CORRIGIDO: Agora todos os campos, incluindo logradouro (Rua/Avenida), ficam editáveis.
+                field.readOnly = !isEditing;
+            });
+            
+            // Ajustar visibilidade e estado dos botões
+            if (isEditing) {
+                editAddressBtn.style.display = 'none';
+                saveAddressBtn.style.display = 'inline-block';
+                clearAddressBtn.style.display = 'inline-block'; 
+                cepSearchBtn.disabled = false;
+            } else {
+                editAddressBtn.style.display = 'inline-block';
+                saveAddressBtn.style.display = 'none';
+                clearAddressBtn.style.display = 'none';
+                cepSearchBtn.disabled = true;
+            }
+        }
+
+        // 3. Ação do botão "Editar Endereço"
+        document.querySelector('.edit-address-btn').addEventListener('click', () => {
+            toggleAddressEditMode(true);
+        });
+
+        // 4. Ação do botão "Salvar Endereço" - IMPLEMENTAÇÃO DO FETCH
+        document.querySelector('.save-address').addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const cep = document.getElementById('cep').value.replace(/\D/g, '');
+            const logradouro = document.getElementById('logradouro').value;
+            const bairro = document.getElementById('bairro').value;
+            const cidade = document.getElementById('cidade').value;
+            
+            if (!cep || !logradouro || !bairro || !cidade) {
+                alert('Por favor, preencha todos os campos obrigatórios do endereço.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/meuperfil/endereco', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        cep: cep,
+                        logradouro: logradouro,
+                        bairro: bairro,
+                        localidade: cidade, 
+                        uf: 'XX' // Valor placeholder, deve ser obtido via API do CEP
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message || 'Endereço salvo com sucesso!');
+                    toggleAddressEditMode(false);
+                } else {
+                    alert(`Erro ao salvar endereço: ${result.error || 'Falha ao conectar com o servidor.'}`);
+                }
+            } catch (error) {
+                console.error('Erro na requisição de endereço:', error);
+                alert('Erro de conexão ao salvar o endereço.');
+            }
+        });
+
+        // 5. Ação do botão "Limpar" (Endereço)
+        document.querySelector('.clear-address').addEventListener('click', () => {
+            document.getElementById('cep').value = '';
+            document.getElementById('logradouro').value = '';
+            document.getElementById('bairro').value = '';
+            document.getElementById('cidade').value = '';
+        });
+        
+        // 6. Lógica de busca de CEP (apenas simulação)
+        document.getElementById('searchCep').addEventListener('click', async () => {
+            const cepField = document.getElementById('cep');
+            const cep = cepField.value.replace(/\D/g, ''); 
+            
+            if (cep.length !== 8) {
+                document.getElementById('cepError').classList.add('show');
+                document.getElementById('cepError').textContent = 'CEP inválido.';
+                return;
+            }
+            
+            document.getElementById('cepError').classList.remove('show');
+            // Simulação de preenchimento após a busca
+            document.getElementById('logradouro').value = 'Rua das Flores (Preenchido)';
+            document.getElementById('bairro').value = 'Centro (Preenchido)';
+            document.getElementById('cidade').value = 'Salvador (Preenchido)';
+            
+            alert(`CEP ${cep} buscado com sucesso!`);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seteeduca - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos Gerais */
+        :root {
+            --orange: #F88C12;
+            --blue: #00A6FF;
+            --green: #59C631;
+            --background: #FCFAFF; 
+            --text-primary: #333;
+            --text-secondary: #6c757d;
+            --sidebar-bg: #FFF4DF;
+            --sidebar-width: 280px;
+            /* Adicionando cores do botão rosa */
+            --action-pink: #E91E63;
+            --action-pink-dark: #D81B60;
+        }
+
+        /* SEU CÓDIGO CSS DA SIDEBAR ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            min-height: 100vh;
+            display: flex; 
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #FFF4DF 0%, #f8f0e3 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
+            flex-shrink: 0; 
+            position: fixed; 
+            left: 0;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* ... (Restante do CSS da sidebar, menu, etc. permanece igual) ... */
+        
+        .logo {
+            padding: 0px 40px;
+            text-align: center;
+            margin-bottom: 25px;
+            margin-top: 30px;
+        }
+        .logo img {
+            max-width: 150px;
+        }
+
+        .menu {
+            flex: 1;
+            padding: 20px 18px;
+            overflow-y: auto; 
+        }
+
+        .menu-item {
+            padding: 30px 20px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            overflow: visible;
+            color: black;
+            text-decoration: none; 
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .menu-item span {
+            z-index: 2;
+            font-size: 15px;
+        }
+
+        .menu-item:hover {
+            background-color: #6c757d21;
+        }
+
+        .menu-item::after {
+            padding: 0 10px;
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 20px;
+            height: 2px;
+            width: 0px;
+            transition: width 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .menu-item:hover::after,
+        .menu-item.active::after {
+            width: calc(100% - 40px);
+        }
+
+        /* Cores das barrinhas inferiores dos itens do menu */
+        .menu-item:nth-child(1)::after { background-color: #F4BF27; } 
+        .menu-item:nth-child(2)::after { background-color: #306bc2; } 
+        .menu-item:nth-child(3)::after { background-color: #9747FF; } 
+        .menu-item:nth-child(4)::after { background-color: #F88C12; } 
+        .menu-item:nth-child(5)::after { background-color: #D22A2A; } 
+        .menu-item:nth-child(6)::after { background-color: #59C631; } 
+
+        .menu-item.active {
+            background-color: rgba(128, 128, 128, 0.356);
+            color: #333;
+            font-weight: 600;
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: currentColor; 
+            z-index: 2;
+        }
+
+        .sidebar-footer {
+            padding: 20px 18px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .logout-button {
+            padding: 16px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: #333;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .logout-button i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .logout-button:hover {
+            background-color: rgba(210, 42, 42, 0.1);
+            color: #D22A2A; 
+            font-weight: 600;
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 30px 25px; 
+            width: calc(100% - var(--sidebar-width));
+            flex-grow: 1; 
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .header-title h1 {
+            color: var(--text-primary);
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        
+        /* Perfil do Usuário e Dropdown */
+        .profile {
+            position: relative;
+            cursor: pointer;
+            z-index: 10; 
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 50px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .profile-header:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .profile-icon {
+            font-size: 38px;
+            color: #333;
+        }
+        
+        .profile-arrow {
+            font-size: 14px;
+            margin-left: 8px;
+            color: #555;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 110%; 
+            right: 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            z-index: 1001;
+            overflow: hidden;
+            padding: 8px 0;
+            border: 1px solid #eee;
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            text-decoration: none;
+            color: #444;
+            font-size: 15px;
+            transition: background-color 0.2s ease;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .profile-dropdown a i {
+            width: 20px;
+            margin-right: 15px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 8px 0;
+        }
+
+        /* ... (CSS do Carrossel e Cards de Info) ... */
+        
+        .welcome-banner {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden; 
+            margin-bottom: 40px;
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            flex-shrink: 0;
+            box-sizing: border-box;
+            position: relative;
+            background-size: cover;
+            background-position: center center;
+            padding: 85px 60px;
+            /* Padding interno do slide */
+            min-height: 450px;
+            /* Altura do banner */
+            display: flex;
+            align-items: center;
+        }
+
+        /* Overlay escuro para legibilidade */
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 100%);
+            /* Gradiente sutil */
+            z-index: 1;
+        }
+
+        .banner-text {
+            position: relative;
+            z-index: 2;
+            max-width: 60%; /* Limita a largura do texto */
+        }
+
+        .banner-text h2 {
+            font-size: 35px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .banner-text p {
+           font-size: 16px;
+           line-height: 1.6;
+           margin-bottom: 25px;
+           max-width: 500px;
+        }
+        
+        .banner-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+        }
+        
+        .banner-features li {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+        }
+        
+        .banner-features li i {
+            margin-right: 10px;
+            width: 15px;
+            color: var(--orange); /* Usa a cor laranja para destaque */
+        }
+        
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+            color: #333;
+        }
+
+        .carousel-button:hover {
+            background-color: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-button.prev { left: 20px; }
+        .carousel-button.next { right: 20px; }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .indicator-dot.active {
+            background-color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Cards de Informações Rápidas */
+        .quick-info-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            margin-top: 80px; /* Diminuí a margem superior */
+        }
+        
+        .info-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .info-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-bottom: 5px solid;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 270px;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .card-header .icon {
+            font-size: 24px;
+            padding: 12px;
+            border-radius: 10px;
+        }
+        
+        .card-number {
+            font-size: 42px;
+            font-weight: 700;
+        }
+
+        .card-label {
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .card-professores { border-color: var(--orange); }
+        .card-professores .icon { background-color: #fdecd9; color: var(--orange); }
+        .card-professores .card-number { color: var(--orange); }
+        
+        .card-alunos { border-color: #ba58f7; }
+        .card-alunos .icon { background-color: #f3e0ff; color:  #ba58f7; }
+        .card-alunos .card-number { color:  #ba58f7; }
+
+        .card-turmas { border-color: #fa1d1d; }
+        .card-turmas .icon { background-color: #ffe6e6; color: #fa1d1d }
+        .card-turmas .card-number { color: #fa1d1d; }
+
+        /* ... (CSS do Modal) ... */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            /* Escondido por padrão */
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease, display 0.3s ease;
+        }
+        .modal-container.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: var(--sidebar-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-container.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-content p {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .modal-buttons button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .modal-buttons button:hover {
+            transform: scale(1.05);
+        }
+        .btn-cancel {
+            background-color: #D22A2A;
+            /* Vermelho */
+        }
+        .btn-confirm {
+            background-color: var(--green);
+            /* Verde */
+        }
+
+        /* ================================== */
+        /* === ESTILOS DO RODAPÉ (IGUAL À IMAGEM) === */
+        /* ================================== */
+
+        .main-footer {
+            background-color: #f9fafb;
+            /* bg-gray-50 (cor da imagem) */
+            color: #6c757d;
+            /* text-gray-600 */
+            padding: 60px 25px 0;
+            /* py-16, px-6 (igual ao .main-content) */
+            font-size: 0.9em;
+            border-top: 1px solid #e5e7eb; /* border-t border-gray-200 */
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr); /* 1 coluna por padrão (mobile) */
+            gap: 40px;
+            /* gap-10 */
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center; /* text-center por padrão */
+        }
+        
+        /* Media query para telas médias (tablet) */
+        @media (min-width: 768px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 colunas */
+                text-align: left;
+                /* Alinha à esquerda */
+            }
+        }
+        
+        /* Media query para telas maiores (desktop), como na imagem */
+        @media (min-width: 1024px) {
+             .footer-content {
+                grid-template-columns: repeat(5, 1fr);
+                /* 5 colunas como na imagem */
+            }
+        }
+
+
+        .footer-section {
+            min-width: 150px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            justify-content: center; /* Padrão (mobile) */
+        }
+        
+        @media (min-width: 768px) {
+            .footer-logo {
+                justify-content: flex-start;
+                /* Alinha à esquerda em desktop */
+            }
+        }
+
+        .footer-section h4 {
+            color: var(--text-primary);
+            /* text-gray-900 */
+            margin-bottom: 16px;
+            /* mb-4 */
+            font-size: 1em;
+            font-weight: 600;
+            /* font-bold */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            /* tracking-wider */
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            /* space-y-3 */
+        }
+
+        .footer-section ul li a {
+            color: var(--text-secondary);
+            /* text-gray-600 */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--text-primary);
+            /* hover:text-black */
+        }
+        
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Padrão (mobile) */
+        }
+        
+        /* Alinhamento para desktop */
+        @media (min-width: 1024px) {
+            .footer-contact {
+                grid-column: span 2 / span 2;
+                /* Ocupa 2 colunas */
+                align-items: flex-end;
+                /* Alinha à direita */
+                text-align: right;
+                /* Alinha texto à direita */
+            }
+        }
+
+        .contact-info p {
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+            color: var(--text-secondary);
+        }
+
+        /* **** MODIFICAÇÃO **** Botão "Entre em Contato" agora é rosa preenchido */
+        .contact-button {
+            display: inline-block;
+            font-weight: 600; /* font-semibold */
+            padding: 12px 24px;
+            /* px-6 py-3 */
+            border-radius: 8px;
+            /* rounded-lg */
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px; /* mt-4 */
+            
+            /* Estilo preenchido (como solicitado) */
+            background-color: var(--action-pink);
+            /* #E91E63 */
+            color: #fff;
+            /* Texto branco */
+            border: 2px solid var(--action-pink);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-button:hover {
+            background-color: var(--action-pink-dark);
+            /* #D81B60 */
+            border-color: var(--action-pink-dark);
+            color: #fff;
+            /* Texto branco no hover */
+            transform: translateY(-2px);
+        }
+        /* **** FIM DA MODIFICAÇÃO **** */
+
+        .footer-bottom {
+            text-align: center;
+            padding: 24px 0; /* py-6 */
+            margin-top: 40px;
+            /* mt-10 (implícito do padding-bottom do footer-content) */
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            border-top: 1px solid #e5e7eb; /* border-t border-gray-200 */
+            background-color: #f3f4f6;
+            /* bg-gray-100 */
+        }
+        
+        /* --- FIM DOS ESTILOS DO RODAPÉ --- */
+        
+        /* Media Queries para Responsividade */
+        @media (max-width: 1024px) {
+            .banner-text { max-width: 100%; }
+            .carousel-slide { padding: 60px 40px; text-align: center; }
+            .banner-features { justify-content: center; grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            :root { --sidebar-width: 70px; }
+            .menu-item span, .logout-button span, .seteeduca { display: none; }
+            .menu-item i, .logout-button i { margin-right: 0; }
+            .sidebar .logo { padding: 0 10px; } 
+            .sidebar .logo img { max-width: 50px; } 
+            .sidebar-footer { padding: 10px 5px; } 
+            .menu { padding: 10px 5px; } 
+            .menu-item { padding: 15px 5px; justify-content: center; } 
+            .menu-item::after { display: none; } 
+            .menu-item.active::before { right: 5px; } 
+            .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+            .header-title h1 { font-size: 22px; }
+            .header-title p { font-size: 14px; }
+            
+            .carousel-slide { min-height: 450px; padding: 40px 25px; }
+            .banner-text h2 { font-size: 28px; }
+            .banner-text p { font-size: 15px; }
+
+            .page-footer { flex-direction: column; justify-content: center; text-align: center; }
+            .footer-links a { margin: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="sidebar">
+          <div>
+
+            <div class="logo">
+
+                <img src="logo.png" alt="logo">
+
+    
+
+        </div>
+
+             <div class="menu">
+
+                <a href="/home" class="menu-item active" onclick="navegarPara('inicio')">
+
+                    <i class="fas fa-home"></i>
+
+                    <span>INÍCIO</span>
+
+                </a>
+
+ 
+
+               <a href="/acessar-aluno" class="menu-item" onclick="navegarPara('cadastro')">
+
+                    <i class="fas fa-address-card"></i>
+
+                    <span>CADASTRO</span>
+
+                </a>
+
+                <a href="/matriculas"class="menu-item" onclick="navegarPara('matricula')">
+
+     
+
+               <i class="fas fa-user-graduate"></i>
+
+                    <span>MATRÍCULA</span>
+
+                </a>
+
+                <a href="/professores" class="menu-item" id="professor-link">
+
+                    <i class="fas fa-chalkboard-teacher"></i>
+
+      
+
+              <span>PROFESSOR</span>
+
+                </a>
+
+   
+
+                <a href="/turmas" class="menu-item" onclick="navegarPara('turmas')">
+
+                    <i class="fas fa-users"></i>
+
+                    <span>TURMA</span>
+
+      
+
+          </a>
+
+                <a href="/financeiro" class="menu-item" onclick="navegarPara('financeiro')">
+
+                    <i class="fas fa-dollar-sign"></i>
+
+                    <span>FINANCEIRO</span>
+
+                </a>
+
+            
+
+</div>
+
+        </div>
+
+        <div class="sidebar-footer">
+
+    <a href="/login/sair" class="logout-button" onclick="return confirm('Deseja realmente sair do sistema?')">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>Sair</span>
+
+    </a>
+
+</div>
+    </div>  
+
+   
+     <main class="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1 id="welcome-greeting">Olá, <%= daycareName %>!</h1>
+                <p><%= message %> </p>
+                </div>
+            <div class="profile" id="profile-toggle">
+             
+               <div class="profile-header">
+                    <i class="fas fa-user-circle profile-icon"></i>
+                    <i class="fas fa-chevron-down profile-arrow"></i>
+                </div>
+                <div class="profile-dropdown" id="profile-dropdown-menu">
+                
+                    <a href="/meuperfil" onclick="navegarPara('meu-perfil')"><i class="fas fa-user"></i> Meu perfil</a>
+                    <a href="/mensalidade" onclick="navegarPara('mensalidade')"><i class="fas fa-file-invoice-dollar"></i> Mensalidade</a>
+                    <a href="/arquivados" onclick="navegarPara('arquivados')"><i class="fas fa-archive"></i> Arquivados</a>
+                    <div class="dropdown-divider"></div>
+                   
+                 
+                </div>
+            </div>
+        </header>
+
+        <div class="welcome-banner">
+            <div class="carousel-slides">
+                <div class="carousel-slide" style="background-image: url('/imagem/creche.png');">
+                    <div class="banner-text">
+ 
+                        <h2>Gerencie sua creche de forma completa!</h2>
+                        <p>Simplifique matrículas, organize turmas e professores e visualize as finanças em um único painel intuitivo.</p>
+                        <ul class="banner-features">
+         
+                           <li><i class="fas fa-check-circle"></i>Cadastro de alunos</li>
+                            <li><i class="fas fa-check-circle"></i>Gestão de professores</li>
+                            <li><i class="fas fa-check-circle"></i>Matrículas online</li>
+              
+                           <li><i class="fas fa-check-circle"></i>Organização turmas</li>
+                            <li><i class="fas fa-check-circle"></i>Administração financeira</li>
+                        </ul>
+                    </div>
+       
+                 </div>
+                <div class="carousel-slide" style="background-image: url('/imagem/kids.png');">
+                    <div class="banner-text">
+                        <h2>Otimize Cada Detalhe da Sua Instituição</h2>
+                      
+                  <p>Automatize tarefas e libere tempo para o que realmente importa: a educação.</p>
+                    </div>
+                </div>
+                 <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?q=80&w=2072&auto=format&fit=crop');">
+                    <div class="banner-text">
+          
+                      <h2>Relatórios e Insights</h2>
+                        <p>Tome decisões baseadas em dados com relatórios detalhados sobre matrículas, finanças e desempenho.</p>
+                         <ul class="banner-features">
+                      
+                          <li><i class="fas fa-check-circle"></i>Relatórios financeiros</li>
+                            <li><i class="fas fa-check-circle"></i>Visão geral de turmas</li>
+                            <li><i class="fas fa-check-circle"></i>Acompanhamento de matrículas</li>
+                        </ul>
+  
+                   </div>
+                </div>
+            </div>
+
+            <button class="carousel-button prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-button next"><i class="fas fa-chevron-right"></i></button>
+
+            <div class="carousel-indicators"></div>
+        </div>
+
+ 
+        <h3 class="quick-info-title">Informações rápidas</h3>
+        <div class="info-cards-container">
+            <div class="info-card card-professores">
+                <div class="card-header"><div class="icon"><i class="fas fa-chalkboard-teacher"></i></div></div>
+                <div class="card-number" id="prof-count"><%= professores %></div>
+                <div class="card-label">Professores ativos</div>
+            </div>
+            <div class="info-card card-alunos">
+                <div class="card-header"><div class="icon"><i class="fas fa-user-graduate"></i></div></div>
+                <div class="card-number" id="alunos-count"<h3><%= matriculas %></h3></div>
+                <div class="card-label">Alunos matriculados</div>
+            </div>
+            <div class="info-card card-turmas">
+                <div class="card-header"><div class="icon"><i class="fas fa-users"></i></div></div>
+                <div class="card-number" id="turmas-count"><%= turmas %></div>
+                <div class="card-label">Turmas ativas</div>
+            </div>
+        </div>
+
+        <footer class="main-footer">
+            <div class="footer-content">
+      
+                 <div class="footer-section footer-logo">
+                    <!-- Opção 2: Caminho relativo (Tente esta se a 1 falhar) -->
+                    <img src="imagem/sete.png" alt="Seteeduca Logo" style="height: 200px;">
+               </div>
+    
+               <div class="footer-section">
+    <h4>Início</h4>
+    <ul>
+        <!-- Link para a Home -->
+        <li><a href="/home">Home</a></li>
+        
+        <!-- Link para Cadastro (Geralmente leva para cadastro de aluno ou lista) -->
+        <!-- Se preferir ir direto para cadastrar aluno, use: /cadastro-aluno -->
+        <li><a href="/cadastro-aluno">Cadastro</a></li>
+        
+        <!-- Link para Matrículas -->
+        <li><a href="/matriculas">Matrícula</a></li>
+        
+        <!-- Link para Professores -->
+        <li><a href="/professores">Professor</a></li>
+        
+        <!-- Link para Turmas -->
+        <li><a href="/turmas">Turma</a></li>
+        
+        <!-- Link para Financeiro -->
+        <li><a href="/financeiro">Financeiro</a></li>
+    </ul>
+</div>
+    
+                <div class="footer-section">
+                
+                    <h4>Sobre Nós</h4>
+                    <ul>
+                        <li><a href="#">Quem Somos</a></li>
+                        <li><a href="#">Equipe</a></li>
+                        
+                        <li><a href="#">Parceiros - SENAI CIMATEC/ SESI</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-section footer-contact">
+                    <h4>Contato</h4>
+                 
+                   <div class="contact-info">
+                        <p>Telefone: (71) 98765-4321</p>
+                        <p>Email: contato@seteeduca.com.br</p>
+                    </div>
+                    <a href="mailto:seteeducaa@gmail.com?subject=Mensagem%20de%20Contato&body=Ol%C3%A1%2C%20gostaria%20de%20entrar%20em%20contato." class="contact-button">
+   
+                         Entre em Contato
+                    </a>
+                </div>
+            </div>
+    
+            <div class="footer-bottom">
+            
+                <p>&copy; 2025 Seteeduca. Todos os direitos reservados. Design e Desenvolvimento Seteeduca.</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <div id="logout-modal" class="modal-container">
+        <div class="modal-content">
+            <p>Tem certeza que deseja sair dessa conta?</p>
+            <div class="modal-buttons">
+                <button id="cancel-logout" class="btn-cancel">Cancelar</button>
+         
+               <button id="confirm-logout" class="btn-confirm">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Função dummy para simular navegação
+        function navegarPara(pagina) {
+            console.log("Navegando para: " + pagina);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- LÓGICA DO MENU DROPDOWN DO PERFIL ---
+            const profileToggle = document.getElementById('profile-toggle');
+            const dropdownMenu = document.getElementById('profile-dropdown-menu');
+            const profileArrow = profileToggle.querySelector('.profile-arrow');
+
+            profileToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+                profileArrow.style.transform = dropdownMenu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+
+            window.addEventListener('click', function() {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                    profileArrow.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            dropdownMenu.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+          
+            // ============== LÓGICA DO CARROSSEL ==============
+            // ... (Toda a lógica do carrossel fica igual) ...
+            const carouselContainer = document.querySelector('.welcome-banner');
+            const slidesContainer = carouselContainer.querySelector('.carousel-slides');
+            const slides = carouselContainer.querySelectorAll('.carousel-slide');
+            const prevButton = carouselContainer.querySelector('.carousel-button.prev');
+            const nextButton = carouselContainer.querySelector('.carousel-button.next');
+            const indicatorsContainer = carouselContainer.querySelector('.carousel-indicators');
+            if (slides.length > 0) { 
+                let currentIndex = 0;
+                let slideInterval;
+                slides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('indicator-dot');
+                    dot.addEventListener('click', () => {
+                        goToSlide(index);
+                        resetInterval();
+                    });
+                    indicatorsContainer.appendChild(dot);
+                });
+                const dots = indicatorsContainer.querySelectorAll('.indicator-dot');
+                function updateIndicators() {
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                }
+                function goToSlide(index) {
+                    currentIndex = (index + slides.length) % slides.length;
+                    slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    updateIndicators();
+                }
+                function resetInterval() {
+                    clearInterval(slideInterval);
+                    slideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000); 
+                }
+                prevButton.addEventListener('click', () => { goToSlide(currentIndex - 1); resetInterval(); });
+                nextButton.addEventListener('click', () => { goToSlide(currentIndex + 1); resetInterval(); });
+                carouselContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+                carouselContainer.addEventListener('mouseleave', () => resetInterval());
+                goToSlide(0);
+                resetInterval();
+            }
+        
+            // --- LÓGICA PARA O MODAL DE LOGOUT ---
+             // ... (Toda a lógica do modal de logout fica igual) ...
+            const logoutModal = document.getElementById('logout-modal');
+            const logoutTriggers = document.querySelectorAll('.logout-trigger');
+            const cancelLogoutBtn = document.getElementById('cancel-logout');
+            const confirmLogoutBtn = document.getElementById('confirm-logout');
+            logoutTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    logoutModal.classList.add('active');
+                });
+            });
+            cancelLogoutBtn.addEventListener('click', function() {
+                logoutModal.classList.remove('active');
+            });
+            logoutModal.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    logoutModal.classList.remove('active');
+                }
+            });
+            confirmLogoutBtn.addEventListener('click', function() {
+                console.log("Usuário deslogado! Redirecionando...");
+                window.location.href = '/login/sair';
+            });
+
+            // ===========================================================
+            // O BLOCO 'fetch('/api/dashboard-data')' FOI REMOVIDO DAQUI
+            // PORQUE OS DADOS AGORA VÊM DO SERVIDOR (EJS)
+            // ===========================================================
+        });
+
+        // Esse código verifica se a página foi aberta pelo botão "Voltar" do navegador
+    window.addEventListener( "pageshow", function ( event ) {
+        var historyTraversal = event.persisted || 
+                               ( typeof window.performance != "undefined" && 
+                                window.performance.navigation.type === 2 );
+        if ( historyTraversal ) {
+            // Se for um "Voltar", força o navegador a recarregar a página
+            window.location.reload();
+        }
+    });
+
+    </script>
+</body>
+</html>

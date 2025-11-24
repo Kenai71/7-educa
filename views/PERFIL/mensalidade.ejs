@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensalidade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background-image: url('/imagem/ChatGPT Image 22_09_2025, 17_12_14.png');
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #FCFCFC; background-image: var(--background-image); background-size: cover; background-attachment: fixed; background-position: center; }
+        .header { background-color: #fade939f; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .header-left { display: flex; align-items: center; gap: 15px; font-size: 35px; font-weight: 550; color: #2c3e50; }
+        .header-left .logo-icon { width: 60px; height: auto; object-fit: contain; }
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .header-icon { width: 50px; height: 50px; cursor: pointer; transition: all 0.3s ease; }
+        .header-icon:hover { transform: scale(1.1); }
+        .profile { position: relative; cursor: pointer; z-index: 10; }
+        .profile-header { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 5px; border-radius: 10px; transition: background-color 0.3s; }
+        .profile-header:hover { background-color: rgba(0, 0, 0, 0.05); }
+        .profile-header .header-icon { margin: 0; cursor: pointer; }
+        .profile-arrow { color: #2c3e50; font-size: 14px; transition: transform 0.3s ease; padding-right: 5px; }
+        .profile-header.open .profile-arrow { transform: rotate(180deg); }
+        .profile-dropdown { position: absolute; top: 100%; right: 0; background-color: white; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; min-width: 200px; display: none; padding: 10px 0; margin-top: 10px; }
+        .profile-dropdown a { color: #333; padding: 12px 16px; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14px; transition: background-color 0.3s; }
+        .profile-dropdown a:hover { background-color: #f1f1f1; color: #f0ad4e; }
+        .profile-dropdown a.active-link { background-color: #f1f1f1; font-weight: 700; color: #ffbb00; }
+        .dropdown-divider { height: 1px; margin: 8px 0; overflow: hidden; background-color: #e9ecef; }
+        .container { max-width: 1100px; margin: 50px auto; padding: 0 20px; position: relative; z-index: 10; }
+        .form-container { background: white; border-radius: 15px; padding: 40px; width: 100%; box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2); position: relative; }
+        .section-title { color: #2c3e50; margin-bottom: 25px; font-size: 20px; font-weight: 600; }
+        .form-group { margin-bottom: 25px; }
+        .form-label { display: block; font-size: 16px; font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .form-input, .form-select { width: 100%; height: 45px; border: 2px solid #e0e0e0; border-radius: 10px; padding: 0 20px; font-size: 14px; color: #2c3e50; outline: none; transition: all 0.3s ease; background-color: white; }
+        .form-input:focus, .form-select:focus { border-color: #ffbb00; background-color: #f8fff9; box-shadow: 0 0 0 3px rgba(168, 213, 197, 0.1); }
+        .form-input:hover, .form-select:hover { border-color: #c0c0c0; }
+        .form-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 20px center; background-size: 16px; padding-right: 50px; }
+        .submit-button { display: flex; justify-content: center; margin-top: 30px; }
+        .btn-cadastrar { background: linear-gradient(135deg, #ffbb00 0%, #ffbb00 100%); color: white; border: none; padding: 15px 35px; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.3s ease; min-width: 200px; justify-content: center; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-cadastrar:hover { background: linear-gradient(135deg, #fcd66e 0%, #ffbb00 100%); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(97, 79, 0, 0.4); }
+        .mensalidades-section { margin-top: 40px; border-top: 1px solid #e0e0e0; padding-top: 30px; }
+        .mensalidade-item { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .mensalidade-item:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05); border-color: #ffbb00; }
+        .mensalidade-info { color: #2c3e50; font-size: 16px; font-weight: 500; display: flex; flex-direction: column; gap: 5px; }
+        .mensalidade-details { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .detail-item { display: flex; align-items: center; gap: 8px; padding: 4px 12px; background: rgba(168, 213, 197, 0.1); border-radius: 10px; font-size: 14px; }
+        .price-highlight { color: #ffbb00; font-weight: 700; font-size: 18px; }
+        .counter { background: white; color: #2c3e50; border: 2px solid #ffbb00; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 700; display: inline-block; margin-bottom: 20px; transition: all 0.3s; }
+        .remove-form { display: inline; }
+        .btn-remover { background: #e74c3c; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .btn-remover:hover { background: #c0392b; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <img 
+                src="/imagem/relatorio-mensal.png" 
+                class="logo-icon" 
+                alt="Logo Mensalidade"
+            >
+            <span>Mensalidade</span>
+        </div>
+        <div class="header-right">
+            <a href="/home" title="Início">
+                <img 
+                    src="/imagem/home3.png" 
+                    class="header-icon" 
+                    alt="Home Icon" 
+                >
+            </a>
+            
+            <div class="profile" id="profile-toggle">
+                <div class="profile-header">
+                    <img 
+                        src="/imagem/perfil2.png" 
+                        class="header-icon" 
+                        alt="Profile Icon" 
+                        title="Perfil"
+                    >
+                    <i class="fas fa-chevron-down profile-arrow"></i>
+                </div>
+                <div class="profile-dropdown" id="profile-dropdown-menu">
+                    <a href="/meuperfil"><i class="fas fa-user"></i> Meu perfil</a>
+                    <a href="/mensalidade" class="active-link"><i class="fas fa-file-invoice-dollar"></i> Mensalidade</a>
+                    <a href="/arquivados"><i class="fas fa-archive"></i> Arquivados</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/login/sair" onclick="event.preventDefault(); logout();"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 class="section-title">Cadastrar Nova Mensalidade</h2>
+            
+            <form action="/mensalidade" method="POST" id="mensalidadeForm">
+                <div class="form-group">
+                    <label class="form-label">Faixa etária:</label>
+                    <input type="text" class="form-input" name="faixa_etaria" placeholder="Ex: 0-2 anos, 3-5 anos" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Turno:</label>
+                    <select class="form-select" name="turno" required>
+                        <option value="" disabled selected>Selecione o Turno</option>
+                        <option value="Integral">Integral</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Valor (R$):</label>
+                    <input type="number" class="form-input" name="valor" placeholder="Ex: 500.00" min="0.01" step="0.01" required>
+                </div>
+                <div class="submit-button">
+                    <button type="submit" class="btn-cadastrar">Cadastrar Mensalidade</button>
+                </div>
+            </form>
+
+            <div class="mensalidades-section">
+                <h3 class="section-title">Mensalidades Cadastradas</h3>
+                <span class="counter">Total de Mensalidades: <%= mensalidades.length %></span>
+                
+                <div class="mensalidades-lista">
+                    <% if (mensalidades && mensalidades.length > 0) { %>
+                        <% mensalidades.forEach(plano => { %>
+                            <div class="mensalidade-item">
+                                <div class="mensalidade-info">
+                                    <div class="mensalidade-details">
+                                        <span class="detail-item"><strong>Faixa Etária:</strong> <span><%= plano.faixa_etaria %></span></span>
+                                        <span class="detail-item"><strong>Turno:</strong> <span><%= plano.turno %></span></span>
+                                        <span class="detail-item"><strong>Valor:</strong> <span class="price-highlight">R$ <%= parseFloat(plano.valor).toFixed(2) %></span></span>
+                                    </div>
+                                </div>
+                                <form class="remove-form" action="/mensalidade/remover/<%= plano.id %>" method="POST" onsubmit="return confirm('Este plano pode estar em uso por uma turma. Deseja mesmo remover?');">
+                                    <button type="submit" class="btn-remover">Remover</button>
+                                </form>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div style="text-align: center; padding: 40px 20px; color: #666;">
+                            Nenhuma mensalidade cadastrada ainda.
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileToggle = document.getElementById('profile-toggle');
+            const dropdownMenu = document.getElementById('profile-dropdown-menu');
+            const profileHeader = profileToggle.querySelector('.profile-header');
+
+            profileToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                const isOpen = dropdownMenu.style.display === 'block';
+                dropdownMenu.style.display = isOpen ? 'none' : 'block';
+                profileHeader.classList.toggle('open', !isOpen);
+            });
+
+            window.addEventListener('click', function(event) {
+                if (!profileToggle.contains(event.target)) {
+                    dropdownMenu.style.display = 'none';
+                    profileHeader.classList.remove('open');
+                }
+            });
+        });
+
+        function logout() {
+            if (confirm('Deseja realmente sair do sistema?')) {
+                window.location.href = '/login/sair';
+            }
+        }
+    </script>
+</body>
+</html>
