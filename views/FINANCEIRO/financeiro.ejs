@@ -1032,17 +1032,25 @@ font-size: 20px;"></span>
         }
     };
     // Função de Arquivar
-    window.arquivarItem = async function(id) {
-        if (!confirm("Arquivar esta despesa?")) return;
+   window.arquivarItem = async function(id, tipo) {
+        if (!confirm("Tem certeza que deseja arquivar esta despesa?")) return;
+
         try {
-            const res = await fetch(API_URL + `/api/transacoes/${id}/arquivar`, { method: 'PUT' });
-            if (res.ok) {
-                window.carregarTabelaFinanceira('ativo');
-                alert("Arquivado!");
+            // Verifica se API_URL existe, senão usa vazio
+            const baseUrl = (typeof API_URL !== 'undefined') ? API_URL : '';
+            
+            const response = await fetch(`${baseUrl}/api/transacoes/${id}/arquivar`, {
+                method: 'PUT'
+            });
+
+            if (response.ok) {
+                alert("Arquivado com sucesso!");
+                location.reload(); // Recarrega a página para atualizar a lista
             } else {
                 alert("Erro ao arquivar.");
             }
-        } catch (e) {
+        } catch (error) {
+            console.error("Erro:", error);
             alert("Erro de conexão.");
         }
     };

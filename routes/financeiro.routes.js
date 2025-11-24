@@ -121,6 +121,7 @@ router.get('/transacoes', async (req, res) => {
 // Rota para criar um novo lançamento
 // Rota Inteligente para Criar Transações
 // api.js - Rota POST /transacoes
+// Rota Inteligente para Criar Transações (Com Auto-Cadastro no Asaas)
 router.post('/transacoes', async (req, res) => {
     const { tipo, valor, data, descricao, categoria, alunoId } = req.body;
 
@@ -131,7 +132,7 @@ router.post('/transacoes', async (req, res) => {
         if (tipo === 'Despesa') {
             const novaDespesa = await Transacao.create({
                 descricao, 
-                valor: -Math.abs(valor), // Valor negativo
+                valor: -Math.abs(valor), // Garante negativo
                 categoria, 
                 data, 
                 ativo: true
@@ -151,35 +152,54 @@ router.post('/transacoes', async (req, res) => {
                 // --- FLUXO ASAAS ---
                 const aluno = await Aluno.findByPk(alunoId, { include: ['responsavel'] });
                 
-                if (!aluno?.responsavel?.asaasCustomerId) {
-                    return res.status(400).json({ message: 'Aluno sem cadastro no Asaas. Verifique o responsável.' });
+                if (!aluno || !aluno.responsavel) {
+                    return res.status(400).json({ message: 'Aluno ou Responsável não encontrado no banco de dados.' });
                 }
 
-                // 1. Cria no Asaas
+                // >>> CORREÇÃO MÁGICA AQUI <<<
+                // Verifica se já tem ID. Se não tiver, cria AGORA.
+                let idClienteAsaas = aluno.responsavel.asaasCustomerId;
+
+                if (!idClienteAsaas) {
+                    console.log(`>>> Responsável ${aluno.responsavel.nome} sem ID Asaas. Criando agora...`);
+                    try {
+                        const novoCliente = await asaasService.criarCliente({
+                            name: aluno.responsavel.nome,
+                            cpfCnpj: aluno.responsavel.cpf,
+                            email: aluno.responsavel.email || 'email@naoinformado.com',
+                            mobilePhone: aluno.responsavel.telefone || aluno.responsavel.mobilePhone
+                        });
+                        
+                        // Atualiza no banco local para não precisar fazer isso de novo
+                        await aluno.responsavel.update({ asaasCustomerId: novoCliente.id });
+                        idClienteAsaas = novoCliente.id; // Atualiza a variável para usar abaixo
+                        console.log(`>>> Cliente criado com sucesso: ${idClienteAsaas}`);
+
+                    } catch (erroAsaas) {
+                        console.error("Erro ao criar cliente no Asaas:", erroAsaas.response?.data || erroAsaas.message);
+                        return res.status(400).json({ message: 'Erro ao cadastrar responsável no Asaas. Verifique CPF/Email.' });
+                    }
+                }
+
+                // 1. Cria a cobrança (Boleto) usando o ID (existente ou recém-criado)
                 const cobranca = await asaasService.criarCobranca({
-                    customer: aluno.responsavel.asaasCustomerId,
+                    customer: idClienteAsaas,
                     billingType: 'BOLETO',
                     dueDate: data,
                     value: valor,
-                    description: `${categoria} - ${aluno.nome}`
+                    description: `${categoria} - ${aluno.nomeCrianca || aluno.nome}`
                 });
                 
-                // 2. Opcional: Você pode salvar no seu banco Transacao também, 
-                // mas geralmente a gente deixa a rota GET /transacoes buscar do Asaas
-                // para não ficar duplicado na tela.
                 return res.status(201).json(cobranca);
 
             } else {
                 // --- FLUXO MANUAL (Uniforme, Evento, etc) ---
-                // Aqui atende seu pedido: Faz o relatório direto no seu banco!
-                
                 const novaReceita = await Transacao.create({
                     descricao: `${descricao} - ${categoria}`,
-                    valor: Math.abs(valor), // Valor positivo
+                    valor: Math.abs(valor), // Positivo
                     categoria: categoria,
                     data: data,
                     ativo: true,
-                    // Não tem ID do Asaas, é interno
                 });
 
                 return res.status(201).json(novaReceita);
@@ -187,8 +207,33 @@ router.post('/transacoes', async (req, res) => {
         }
 
     } catch (error) {
-        console.error("Erro ao salvar:", error);
-        res.status(500).json({ message: "Erro interno ao processar." });
+        console.error("Erro ao salvar transação:", error);
+        res.status(500).json({ message: "Erro interno ao processar: " + error.message });
+    }
+});
+
+router.put('/transacoes/:id/arquivar', async (req, res) => {
+    const { id } = req.params;
+    console.log(`>>> Recebido pedido de ARQUIVAR (PUT) ID: ${id}`);
+
+    try {
+        // 1. Tenta atualizar usando o Sequelize (seu padrão do projeto)
+        // Isso vai mudar a coluna 'ativo' para false (0)
+        const [linhasAtualizadas] = await Transacao.update(
+            { ativo: false }, 
+            { where: { id: id } }
+        );
+
+        if (linhasAtualizadas > 0) {
+            return res.json({ message: 'Sucesso! Item arquivado.' });
+        } else {
+            return res.status(404).json({ message: 'Item não encontrado ou ID incorreto.' });
+        }
+
+    } catch (error) {
+        console.error("Erro ao arquivar:", error);
+        // Retorna a mensagem real do erro para aparecer no seu alerta
+        res.status(500).send('Erro interno: ' + error.message);
     }
 });
 
