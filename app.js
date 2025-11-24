@@ -36,7 +36,10 @@ app.use((req, res, next) => {
 
 // Configurações Gerais
 app.set("view engine", "ejs");
-app.set("views", "./views");
+
+// --- CORREÇÃO AQUI: Caminho absoluto para as views ---
+app.set("views", path.join(__dirname, 'views'));
+// ----------------------------------------------------
 
 // --- CORREÇÃO IMPORTANTE: Caminho absoluto para arquivos estáticos ---
 app.use(express.static(path.join(__dirname, 'public'))); 
@@ -69,7 +72,7 @@ app.get('/inicio', (req, res) => {
     res.redirect('/home'); // Manda o usuário para o Dashboard principal
 });
 
-// Rota do Contrato (CORREÇÃO: Adicionada para o botão funcionar)
+// Rota do Contrato
 app.get('/contrato', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'contrato.html'));
 });
