@@ -2,14 +2,14 @@ import 'dotenv/config';
 import express from 'express';
 import session from 'express-session'; 
 import supabase from './supabase.js';
-import path from 'path'; // ADICIONADO: Importação necessária
-import { fileURLToPath } from 'url'; // ADICIONADO: Para recriar o __dirname
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// CONFIGURANDO __dirname (Necessário para ES Modules)
+// Configuração de __dirname para ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// IMPORTS DAS ROTAS
+// Imports das Rotas
 import turmasRouter from './routes/turmas.routes.js';
 import matriculasRouter from './routes/matricula.routes.js';
 import professoresRoutes from './routes/professores.routes.js';
@@ -24,11 +24,9 @@ import financeiroRoutes from './routes/financeiro.routes.js';
 import privateRoute from './routes/private.route.js'; 
 
 const app = express();
-const PORT = process.env.PORT || 3020; // Usa a porta da Vercel ou 3020
+const PORT = process.env.PORT || 3020;
 
-// ==================================================================
-// 🚨 MATADOR DE CACHE
-// ==================================================================
+// Middleware para evitar cache (Logout e segurança)
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     res.set('Pragma', 'no-cache');
@@ -36,24 +34,21 @@ app.use((req, res, next) => {
     next();
 });
 
-// --- CONFIGURAÇÕES GERAIS ---
+// Configurações Gerais
 app.set("view engine", "ejs");
 app.set("views", "./views");
-app.use(express.static('public')); // Serve arquivos estáticos
+app.use(express.static('public'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// ==================================================================
-// 🟢 CONFIGURAÇÃO DE SESSÃO (CORRIGIDA PARA VERCEL)
-// Removido FileStore pois Vercel não aceita escrita de arquivos
-// ==================================================================
+// Configuração de Sessão (Em memória, compatível com Vercel)
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'chave-secreta-padrao', // Use .env se possível
+    secret: process.env.SESSION_SECRET || 'chave-secreta-padrao',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: { 
-        secure: false, // Mude para true se tiver HTTPS configurado
+        secure: false, // Mude para true se tiver SSL/HTTPS configurado
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 24 horas
     } 
@@ -61,16 +56,13 @@ app.use(session({
 
 // --- ROTAS ---
 
-// ROTA INICIAL (Corrigida com __dirname e path)
+// Rota Inicial
 app.get('/', (req, res) => {
-    // Garanta que existe 'index.html' na pasta public, senão mude para 'site.html'
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// LOGIN
+// Autenticação e Cadastro
 app.use('/login', loginRouter);
-
-// CADASTRO
 app.use('/cadastro', cadastroRouter);
 app.get("/cadastro-aluno", privateRoute, (req, res) => { 
   res.render("ALUNO/cadastro-aluno");
@@ -80,24 +72,22 @@ app.get("/cadastro-responsavel", privateRoute, (req, res) => {
 });
 app.use("/acessar-aluno", privateRoute, alunoAcessarRouter); 
 
-// PERFIL
+// Perfil e Funcionalidades
 app.use('/meuperfil', privateRoute, perfilRouter);
 app.use('/api/perfil', privateRoute, perfilRouter);
-
-// FINANCEIRO & OUTROS
 app.use('/mensalidade', privateRoute, mensalidadeRouter); 
 app.use('/arquivados', privateRoute, arquivadosRouter); 
+
+// Financeiro
 app.get('/financeiro', privateRoute, (req, res) => { 
   res.render('FINANCEIRO/financeiro');
 });
 app.use('/api', privateRoute, financeiroRoutes); 
 
-// HOME (Sua lógica complexa mantida)
+// Home Dashboard
 app.get("/home", privateRoute, async (req, res) => {
     try {
-        console.log("--- Carregando Home ---");
-        
-        // Seus filtros do Supabase
+        // Consultas ao Supabase
         let { data: profData } = await supabase.from('professor').select('ativo');
         let profFinal = profData ? profData.filter(p => String(p.ativo).toLowerCase() === 'true').length : 0;
 
@@ -131,18 +121,18 @@ app.get("/home", privateRoute, async (req, res) => {
     }
 });
 
-// OUTRAS ROTAS
+// Outras Rotas do Sistema
 app.use('/senha', senhaRouter);
 app.use('/turmas', privateRoute, turmasRouter); 
 app.use('/matriculas', privateRoute, matriculasRouter); 
 app.use('/professores', privateRoute, professoresRoutes); 
 
-// TERMOS
+// Termos de Uso
 app.get('/termossete', (req, res) => {
     res.render('TERMOS/termossete', { title: 'Termos de Uso - Sete Educacional' });
 });
 
-// TESTE BANCO
+// Rota de Teste do Banco
 app.get('/testar-banco', async (req, res) => {
   try{
         const { error, count } = await supabase.from('professor').select('*', { count: 'exact', head: true });
@@ -153,10 +143,7 @@ app.get('/testar-banco', async (req, res) => {
   }
 });
 
-// ==================================================================
-// 🟢 INICIALIZAÇÃO ÚNICA DO SERVIDOR
-// ==================================================================
-// Verifica se NÃO está rodando testes para levantar o servidor
+// Inicialização do Servidor
 if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);
