@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
-import 'dotenv/config'; // Substitui o require('dotenv').config()
+import pg from 'pg'; // 1. IMPORTAÇÃO OBRIGATÓRIA PARA VERCEL
+import 'dotenv/config'; 
 
 // --- LINHA DE DEBUG ---
 console.log(`[Debug] Tentando conectar com a URL: ${process.env.DATABASE_URL ? 'URL encontrada!' : 'URL NÃO ENCONTRADA'}`);
@@ -7,6 +8,7 @@ console.log(`[Debug] Tentando conectar com a URL: ${process.env.DATABASE_URL ? '
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
+    dialectModule: pg, // 2. CONFIGURAÇÃO OBRIGATÓRIA PARA VERCEL
     protocol: 'postgres',
     dialectOptions: {
         ssl: {
@@ -34,5 +36,4 @@ const testConnection = async () => {
 
 testConnection();
 
-// Troca "module.exports" por "export default"
 export default sequelize;
