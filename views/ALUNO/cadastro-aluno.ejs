@@ -35,18 +35,7 @@
         .menu-item:nth-child(6)::after { background-color: #59C631; }
         
         .menu-item.active { background-color: rgba(128, 128, 128, 0.356); color: #333; font-weight: 600; }
-       .menu-item.active::before {
-            content: '';
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: currentColor;
-            z-index: 2;
-        }
+       .menu-item.active::before { content: ''; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 50%; background-color: currentColor; z-index: 2; }
         .seteeduca { color: #333; margin-top: 90px; position: absolute; margin-left: 70px; }
         .sidebar-footer { padding: 20px 18px; border-top: 1px solid rgba(0, 0, 0, 0.1); }
         
@@ -69,7 +58,10 @@
         .profile { position: relative; cursor: pointer; margin-left: auto; }
         .profile-header { display: flex; align-items: center; gap: 12px; color: white; padding: 5px; border-radius: 8px; transition: background 0.2s; }
         .profile-header:hover { background: rgba(255, 255, 255, 0.1); }
-        .profile-icon { font-size: 28px; }
+        
+        /* --- AQUI A ALTERAÇÃO DO TAMANHO --- */
+        .profile-icon { font-size: 38px; }
+        
         .profile-arrow { font-size: 14px; transition: transform 0.3s ease; color: white; }
         
         .profile-dropdown { display: none; position: absolute; top: 130%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); width: 200px; padding: 8px 0; z-index: 1000; flex-direction: column; border: 1px solid #edf2f7; }
@@ -178,83 +170,23 @@
         @media (min-width: 769px) {
             .sidebar { transform: translateX(0) !important; }
         }
-        /* --- COLE ISSO NO FINAL DO SEU STYLE --- */
-
-@media (max-width: 768px) {
-    
-    /* 1. MATAR O QUADRADINHO E O FUNDO ESCURO */
-    .mobile-menu-toggle, 
-    .sidebar-overlay {
-        display: none !important;    /* Remove da tela */
-        opacity: 0 !important;       /* Torna invisível */
-        pointer-events: none !important; /* Impede cliques fantasmas */
-        width: 0 !important;
-        height: 0 !important;
-    }
-
-    /* 2. FORÇAR A BARRA A APARECER (MINI) */
-    .sidebar, 
-    .sidebar.mobile-hidden {
-        transform: none !important;      /* Cancela o movimento de esconder */
-        left: 0 !important;              /* Cola na esquerda */
-        width: 70px !important;          /* Largura fina */
-        display: flex !important;        /* Garante que o container exista */
-        z-index: 9999 !important;        /* Fica por cima de tudo */
-    }
-
-    /* 3. EMPURRAR O CONTEÚDO PARA A DIREITA */
-    .main-content {
-        margin-left: 70px !important;        /* Espaço para a barra fina */
-        width: calc(100% - 70px) !important; /* Ocupa o resto da tela */
-    }
-
-    /* 4. ESCONDER TEXTOS (Deixar só ícones) */
-    .menu-item span, 
-    .logout-button span, 
-    .seteeduca, 
-    .header-title i, /* Se o ícone do header parecer um menu, isso remove */
-    .profile-arrow {
-        display: none !important;
-    }
-
-    /* 5. CENTRALIZAR ÍCONES PERFEITAMENTE */
-    .menu-item, 
-    .logout-button {
-        justify-content: center !important;
-        padding: 20px 0 !important;
-    }
-
-    .menu-item i, 
-    .logout-button i {
-        margin-right: 0 !important;
-        font-size: 22px !important;
-        display: block !important;
-    }
-
-    /* 6. AJUSTAR LOGO PEQUENA */
-    .logo {
-        padding: 0 !important;
-        margin-top: 20px !important; 
-        text-align: center !important;
-    }
-    .logo img {
-        max-width: 40px !important;
-    }
-
-    /* 7. REMOVER LINHAS DECORATIVAS EXTRAS */
-    .menu-item::after { display: none !important; }
-    
-    /* Ajuste da bolinha de item ativo */
-    .menu-item.active::before {
-        right: 5px !important;
-    }
-
-    /* 8. AJUSTES DO FORMULÁRIO (Para não quebrar) */
-    .content-area { padding: 15px !important; }
-    .form-grid.two-columns { grid-template-columns: 1fr !important; }
-    .form-field.full-width { grid-column: 1 !important; }
-    .btn { width: 100% !important; }
-}
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle, .sidebar-overlay { display: none !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; height: 0 !important; }
+            .sidebar, .sidebar.mobile-hidden { transform: none !important; left: 0 !important; width: 70px !important; display: flex !important; z-index: 9999 !important; }
+            .main-content { margin-left: 70px !important; width: calc(100% - 70px) !important; }
+            .menu-item span, .logout-button span, .seteeduca, .header-title i, .profile-arrow { display: none !important; }
+            .menu-item, .logout-button { justify-content: center !important; padding: 20px 0 !important; }
+            .menu-item i, .logout-button i { margin-right: 0 !important; font-size: 22px !important; display: block !important; }
+            .logo { padding: 0 !important; margin-top: 20px !important; text-align: center !important; }
+            .logo img { max-width: 40px !important; }
+            .menu-item::after { display: none !important; }
+            .menu-item.active::before { right: 5px !important; }
+            .content-area { padding: 15px !important; }
+            .form-grid.two-columns { grid-template-columns: 1fr !important; }
+            .form-field.full-width { grid-column: 1 !important; }
+            .btn { width: 100% !important; }
+        }
     </style>
 </head>
 <body>
@@ -270,7 +202,7 @@
         </div>
         
         <div class="menu">
-             <div class="menu-item" onclick="navegarPara('inicio')">
+            <div class="menu-item" onclick="navegarPara('inicio')">
                 <i class="fas fa-home"></i>
                 <span>INÍCIO</span>
             </div>
@@ -290,7 +222,7 @@
                 <i class="fas fa-users"></i>
                 <span>TURMA</span>
             </div>
-           <div class="menu-item" onclick="navegarPara('financeiro')">
+            <div class="menu-item" onclick="navegarPara('financeiro')">
                 <i class="fas fa-dollar-sign"></i>
                 <span>FINANCEIRO</span>
             </div>
@@ -330,11 +262,8 @@
         <div class="content-area">
            <div class="registration-panel">
                 <div class="panel-header"></div>
-
                 <div class="panel-content">
-                    
                     <form id="registrationForm" method="POST" action="/acessar-aluno/cadastrar">
-                        
                         <input type="hidden" name="foto_crianca" id="campoFotoBase64">
 
                         <div class="photo-upload-section">
@@ -384,7 +313,7 @@
                             </div>
                         </div>
 
-                          <div class="form-section">
+                        <div class="form-section">
                             <h3 class="section-title">
                                 <i class="fas fa-phone"></i>
                                 Responsável
@@ -394,12 +323,10 @@
                                     <label class="form-label">Nome do Responsável</label>
                                     <input type="text" class="form-input" name="responsavel" placeholder="Nome completo" required>
                                 </div>
-
                                 <div class="form-field">
                                     <label class="form-label">CPF do Responsável</label>
                                     <input type="text" class="form-input" name="cpf_responsavel" placeholder="000.000.000-00" required>
                                 </div>
-
                                 <div class="form-field">
                                     <label class="form-label">Telefone</label>
                                     <input type="tel" class="form-input" name="telefone" placeholder="(11) 99999-9999" required>
@@ -434,7 +361,7 @@
                                     <input type="text" class="form-input" name="logradouro" placeholder="Rua, Avenida, etc." required>
                                 </div>
                                 <div class="form-field">
-                                    <label class="form-label">Número</label>
+                                   <label class="form-label">Número</label>
                                     <input type="text" class="form-input" name="numero" placeholder="123" required>
                                 </div>
                                 <div class="form-field">
@@ -445,10 +372,10 @@
                         </div>
 
                         <div class="form-section">
-                           <h3 class="section-title">
+                            <h3 class="section-title">
                                <i class="fas fa-address-card"></i>
                                 Informações de Saúde
-                           </h3>
+                            </h3>
                             <div class="form-grid two-columns">
                                 <div class="form-field full-width">
                                     <label class="form-label">Observações</label>
@@ -506,7 +433,6 @@
                 this.classList.add('active');
             });
         });
-
         function navegarPara(pagina) {
             const rotas = {
                 'inicio': '/home',
@@ -598,7 +524,6 @@
                 window.location.href = '/login';
             }
         });
-
         document.querySelector('input[name="cpf"]').addEventListener('input', function() {
             let value = this.value.replace(/\D/g, '');
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
@@ -606,7 +531,6 @@
             value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
             this.value = value;
         });
-
         document.querySelector('input[name="cpf_responsavel"]').addEventListener('input', function() {
             let value = this.value.replace(/\D/g, '');
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
@@ -614,20 +538,17 @@
             value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
             this.value = value;
         });
-
         document.querySelector('input[name="telefone"]').addEventListener('input', function() {
             let value = this.value.replace(/\D/g, '');
             value = value.replace(/(\d{2})(\d)/, '($1) $2');
             value = value.replace(/(\d{5})(\d)/, '$1-$2');
             this.value = value;
         });
-
         document.querySelector('input[name="cep"]').addEventListener('input', function() {
             let value = this.value.replace(/\D/g, '');
             value = value.replace(/(\d{5})(\d)/, '$1-$2');
             this.value = value;
         });
-
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 document.getElementById('sidebar').classList.remove('mobile-hidden');
@@ -642,17 +563,14 @@
                 closeModal('successModal');
             }
         });
-
         document.getElementById('errorModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal('errorModal');
             }
         });
-
         const profileToggle = document.getElementById('profile-toggle');
         const profileDropdown = document.getElementById('profile-dropdown-menu');
         const profileArrow = document.querySelector('.profile-arrow');
-
         if (profileToggle) {
             profileToggle.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -664,7 +582,6 @@
                     profileArrow.style.transform = 'rotate(0deg)';
                 }
             });
-
             document.addEventListener('click', function() {
                 if (profileDropdown && profileDropdown.classList.contains('active')) {
                     profileDropdown.classList.remove('active');

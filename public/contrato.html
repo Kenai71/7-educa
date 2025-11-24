@@ -12,25 +12,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        /* CSS mantido igual */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
         .bg-primary { background-color: #ffe5a4; }
         .bg-action-orange { background-color: #ffbb68; }
         .bg-action-orange-dark { background-color: #f57c00; } 
         .bg-warm { background-color: #FFF4DF; }
+        
         .bg-action-pink { background-color: #E91E63; }
         .bg-action-pink-dark { background-color: #D81B60; }
+
         .text-dark-gray { color: #333333; }
         .border-action-orange { border-color: #f57c00; }
+
+        /* Classes de texto e borda adicionadas */
         .text-action-pink { color: #E91E63; }
         .border-action-pink { border-color: #E91E63; }
-        .nav-link { position: relative; padding: 0.5rem 0; }
+
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+        }
         .nav-link::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-            background-color: #ffca0a; transform: scaleX(0); transform-origin: center;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #ffca0a; 
+            transform: scaleX(0);
+            transform-origin: center;
             transition: transform 0.3s ease;
         }
-        .nav-link:hover::before { transform: scaleX(1); }
-        .swiper-button-next, .swiper-button-prev, .swiper-pagination { display: none; }
+        .nav-link:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .swiper-button-next, .swiper-button-prev, .swiper-pagination {
+            display: none;
+        }
     </style>
 </head>
 
@@ -38,25 +61,24 @@
 
     <header id="header" class="bg-white/90 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
     <div class="container mx-auto px-6 py-2 flex justify-between items-center">
-        <a href="/">
-            <img src="/img/logo-2.png" alt="Logo Seteeduca" class="h-24 md:h-32 -my-4" style="padding: 30px;">
+        <a href="/home"> <img src="img/logo-2.png" alt="Logo Seteeduca" class="h-24 md:h-32 -my-4" style="padding: 30px;">
         </a>
         
         <nav class="hidden md:flex items-center space-x-8">
-            <a href="/#quem-somos" class="nav-link text-gray-900 hover:text-action-orange transition">Quem Somos</a>
-            <a href="/#equipe" class="nav-link text-gray-900 hover:text-action-orange transition">Equipe</a>
-            <a href="/#recursos" class="nav-link text-gray-900 hover:text-action-orange transition">Recursos</a>
-            <a href="/#planos" class="nav-link text-gray-900 hover:text-action-orange transition">Plano</a>
+            <a href="index.html#quem-somos" class="nav-link text-gray-900 hover:text-action-orange transition">Quem Somos</a>
+            <a href="index.html#equipe" class="nav-link text-gray-900 hover:text-action-orange transition">Equipe</a>
+            <a href="index.html#recursos" class="nav-link text-gray-900 hover:text-action-orange transition">Recursos</a>
+            <a href="index.html#planos" class="nav-link text-gray-900 hover:text-action-orange transition">Plano</a>
         </nav>
         <button id="mobile-menu-button" class="md:hidden text-primary focus:outline-none" style="color: #f57c00;"> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
         </button>
 
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg z-40 border-t border-gray-200">
             <nav class="flex flex-col p-6 space-y-4">
-                <a href="/#quem-somos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Quem Somos</a>
-                <a href="/#equipe" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Equipe</a>
-                <a href="/#recursos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Recursos</a>
-                <a href="/#planos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Plano</a>
+                <a href="site.html#quem-somos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Quem Somos</a>
+                <a href="site.html#equipe" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Equipe</a>
+                <a href="site.html#recursos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Recursos</a>
+                <a href="site.html#planos" class="block py-2 text-gray-900 hover:text-action-orange transition font-medium">Plano</a>
             </nav>
         </div>
         </div>
@@ -106,12 +128,8 @@
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email de Administrador</label>
                                 <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-action-orange transition">
                             </div>
-                            <div>
-                                <label for="password" class="block text-sm font-medium text-gray-700">Crie uma Senha</label>
-                                <input type="password" id="password" name="password" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-action-orange transition">
-                            </div>
-
-                             <div class="mt-6">
+                            
+                            <div class="mt-6">
                                 <label class="block text-sm font-medium text-gray-700">Termos de Serviço</label>
                                 <div class="mt-1 h-32 w-full p-2 border border-gray-300 rounded-lg overflow-y-scroll bg-gray-50 text-xs text-gray-600">
                                     <p>CONTRATO DE PRESTAÇÃO DE SERVIÇOS DE SOFTWARE COMO SERVIÇO (SaaS)</p>
@@ -143,7 +161,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 text-center md:text-left">
                 
                 <div class="flex justify-center md:justify-start">
-                     <img src="/img/sete.svg" alt="Logo Seteeduca" class="h-20 -mt-6" style="height: 250px; margin: -30px; margin-right: 20px;"> 
+                     <img src="img/sete.svg" alt="Logo Seteeduca" class="h-20 -mt-6" style="height: 250px; margin: -30px; margin-right: 20px;"> 
                 </div>
 
                 <div>
@@ -161,8 +179,8 @@
                 <div>
                     <h4 class="font-bold text-gray-900 mb-4 tracking-wider uppercase">Sobre Nós</h4>
                     <ul class="space-y-3">
-                        <li><a href="/#quem-somos" class="text-gray-600 hover:text-black transition">Quem Somos</a></li>
-                        <li><a href="/#equipe" class="text-gray-600 hover:text-black transition">Equipe</a></li>
+                        <li><a href="#quem-somos" class="text-gray-600 hover:text-black transition">Quem Somos</a></li>
+                        <li><a href="#equipe" class="text-gray-600 hover:text-black transition">Equipe</a></li>
                         <li><a href="#" class="text-gray-600 hover:text-black transition">Parceiros - SENAI CIMATEC/ SESI</a></li>
                     </ul>
                 </div>
@@ -205,9 +223,9 @@
         const schoolName = document.getElementById('school-name').value;
         const cnpj = document.getElementById('cnpj').value;
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        // SENHA REMOVIDA DAQUI TAMBÉM
 
-        if (!schoolName || !cnpj || !email || !password) {
+        if (!schoolName || !cnpj || !email) { // REMOVIDA VALIDAÇÃO DA SENHA
             alert('Por favor, preencha todos os campos do formulário.');
             return;
         }
@@ -225,15 +243,23 @@
         // 5. Aciona o cliente de email
         window.location.href = mailtoLink;
 
-        // 6. Define a mensagem de sucesso
+     // 6. Define a mensagem de sucesso COM O BOTÃO PARA O LOGIN
         const successMessageHTML = `
             <h2 class="text-2xl font-bold text-dark-gray mb-6">Solicitação Enviada!</h2>
             <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-6 rounded-lg shadow-md">
                 <p class="font-bold text-lg">Obrigado pelo seu interesse!</p>
                 <p class="mt-3">Seu programa de email foi aberto para que você possa nos enviar sua solicitação.</p>
-                <p class="mt-2">Após o envio do email, nossa equipe analisará seus dados e <strong>entrará em contato em até 3 dias úteis</strong> para finalizar a ativação da sua conta.</p>
+                <p class="mt-2">Após o envio do email, clique no botão abaixo para <strong>acessar sua conta</strong>.</p>
             </div>
+            
             <div class="mt-8 text-center">
+                <a href="/login"
+                   class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out">
+                    VENHA CONHECER O SETEEDUCA
+                </a>
+            </div>
+
+            <div class="mt-6 text-center">
                 <svg class="w-20 h-20 text-green-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
         `;
@@ -245,7 +271,7 @@
     
     // --- Lógica do Menu Mobile ---
     const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu'); // <-- Isso agora vai funcionar
+    const mobileMenu = document.getElementById('mobile-menu'); 
     
     mobileMenuButton.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
@@ -259,7 +285,7 @@
             if(link.getAttribute('href').startsWith('#') || link.getAttribute('href').includes('site.html#')) {
                 // Só esconde o menu mobile, pois o 'nav a' (desktop) não deve ser afetado
                 if (!mobileMenu.classList.contains('hidden')) {
-                     mobileMenu.classList.add('hidden');
+                      mobileMenu.classList.add('hidden');
                 }
             }
         });

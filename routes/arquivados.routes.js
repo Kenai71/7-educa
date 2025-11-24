@@ -3,7 +3,7 @@ import supabase from '../supabase.js';
 
 const router = express.Router();
 
-// Função para calcular a idade (vamos fazer isso no backend para manter o EJS limpo)
+// Função auxiliar para calcular a idade
 function calcularIdade(dataNasc) {
     if (!dataNasc) return 'Idade desconhecida';
     const hoje = new Date();
@@ -18,50 +18,58 @@ function calcularIdade(dataNasc) {
 
 // 1. ROTA GET: EXIBIR A PÁGINA DE ARQUIVADOS
 router.get('/', async (req, res) => {
-    // A consulta agora busca crianças e o nome do seu responsável principal
-    const { data: criancasArquivadas, error } = await supabase
-        .from('cadastro_crianca')
-        .select(`
-            *,
-            responsavel ( nome, parentesco )
-        `)
-        .eq('ativo', false); // A chave é buscar onde 'ativo' é FALSE
+    try {
+        const { data: criancasArquivadas, error } = await supabase
+            .from('cadastro_crianca') 
+            .select(`
+                *,
+                responsavel ( nome, parentesco )
+            `)
+            .eq('ativo', false);
 
-    if (error) {
-        console.error("Erro ao buscar crianças arquivadas:", error);
-        return res.status(500).send("Erro no servidor.");
+        if (error) {
+            console.error("Erro Supabase:", error);
+            throw error;
+        }
+
+        const dadosFormatados = criancasArquivadas ? criancasArquivadas.map(crianca => {
+            const responsaveis = crianca.responsavel || []; 
+            const responsavelPrincipal = responsaveis.find(r => r.parentesco === 'Mãe') || responsaveis[0];
+
+            return {
+                ...crianca,
+                idadeFormatada: calcularIdade(crianca.i_nascimento),
+                responsavelPrincipalNome: responsavelPrincipal ? responsavelPrincipal.nome : 'Não encontrado'
+            };
+        }) : [];
+
+        // CORREÇÃO: Aponta para a pasta PERFIL dentro de views
+        res.render('PERFIL/arquivados', { criancas: dadosFormatados });
+
+    } catch (error) {
+        console.error("Erro ao carregar rota arquivados:", error.message);
+        // Tenta renderizar mesmo com erro
+        res.render('PERFIL/arquivados', { criancas: [] });
     }
-
-    // Processamos os dados para facilitar o uso no EJS
-    const dadosFormatados = criancasArquivadas.map(crianca => {
-        const responsavelPrincipal = crianca.responsavel.find(r => r.parentesco === 'Mãe') || crianca.responsavel[0];
-        return {
-            ...crianca,
-            idadeFormatada: calcularIdade(crianca.i_nascimento),
-            responsavelPrincipalNome: responsavelPrincipal ? responsavelPrincipal.nome : 'Não encontrado'
-        };
-    });
-
-    res.render('arquivados', { criancas: dadosFormatados });
 });
 
 // 2. ROTA POST: DESARQUIVAR UMA CRIANÇA
 router.post('/desarquivar/:id', async (req, res) => {
     const { id } = req.params;
 
-    // Usamos .update() para marcar a criança como ativa novamente
-    const { error } = await supabase
-        .from('cadastro_crianca')
-        .update({ ativo: true })
-        .eq('id', id);
+    try {
+        const { error } = await supabase
+            .from('cadastro_crianca')
+            .update({ ativo: true })
+            .eq('id', id);
 
-    if (error) {
-        console.error("Erro ao desarquivar criança:", error);
-        return res.status(500).send("Erro ao desarquivar criança.");
+        if (error) throw error;
+
+        res.redirect('/arquivados');
+    } catch (error) {
+        console.error("Erro ao desarquivar:", error);
+        res.redirect('/arquivados');
     }
-
-    // Redireciona de volta para a lista de arquivados (a criança sumirá de lá)
-    res.redirect('/arquivados');
 });
 
 export default router;
